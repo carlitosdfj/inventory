@@ -506,7 +506,7 @@
   <div class="logo-icon">🎵</div>
   <div>
     <div class="logo-text">Golden Hour</div>
-    <div class="logo-sub">Control de Inventario</div>
+    <div class="logo-sub">Control de Ingreso y Salida</div>
   </div>
 </header>
 
@@ -515,7 +515,7 @@
   <div class="config-section">
     <div class="config-title">⚙️ Configuración API</div>
     <div class="input-group">
-      <label>Token de Airtable</label>
+      <label>Token</label>
       <input type="password" id="api-token" placeholder="pat..." autocomplete="off">
     </div>
     <div class="input-group" style="margin-bottom:0">
@@ -782,7 +782,7 @@ document.getElementById('asset-name').textContent = Array.isArray(nombreRaw) ? n
     try {
       const body = {
         fields: {
-          'Activo': currentQR || '',
+          'QR': currentQR || '',
           'Entrada/Salida': selectedTipo,
           'Responsable': responsable,
           'Fecha': new Date().toISOString().split('T')[0],
