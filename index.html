@@ -717,7 +717,8 @@
       currentAssetRecordId = record.id;
       currentQR = qr;
 
-      document.getElementById('asset-name').textContent = fields['Nombre/ID'] || '—';
+      const nombreRaw = fields['Nombre/ID'];
+document.getElementById('asset-name').textContent = Array.isArray(nombreRaw) ? nombreRaw[0] : (nombreRaw || '—');
       document.getElementById('asset-code').textContent = fields['Código de barras'] || qr;
       document.getElementById('asset-serie').textContent = fields['Número de serie'] || '—';
       document.getElementById('asset-estado').textContent = fields['Estado'] || '—';
@@ -746,7 +747,7 @@
           });
           const uData = await uRes.json();
           document.getElementById('asset-ubicacion').textContent =
-            uData.fields?.['Nombre'] || uData.fields?.['Name'] || uData.fields?.['Ubicación'] || '—';
+            uData.fields?.['Ubicación'] || uData.fields?.['Nombre'] || '—';
         } catch { document.getElementById('asset-ubicacion').textContent = '—'; }
       } else {
         document.getElementById('asset-ubicacion').textContent = '—';
@@ -781,7 +782,7 @@
     try {
       const body = {
         fields: {
-          'Activo': currentQR,
+          'Activo': currentQR || '',
           'Entrada/Salida': selectedTipo,
           'Responsable': responsable,
           'Fecha': new Date().toISOString().split('T')[0],
