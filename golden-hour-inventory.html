@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Golden Hour — Inventario</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #F5A623;
+    --gold-dark: #C47D0E;
+    --black: #0A0A0A;
+    --dark: #111111;
+    --card: #1A1A1A;
+    --border: #2A2A2A;
+    --text: #F0F0F0;
+    --muted: #888;
+    --green: #2ECC71;
+    --red: #E74C3C;
+    --radius: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--dark);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--gold);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* MAIN */
+  main {
+    padding: 24px 20px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* CONFIG SECTION */
+  .config-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .config-title {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .input-group {
+    margin-bottom: 12px;
+  }
+
+  label {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  input, select {
+    width: 100%;
+    background: var(--black);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 12px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input:focus, select:focus {
+    border-color: var(--gold);
+  }
+
+  input::placeholder { color: var(--muted); }
+
+  select option { background: var(--dark); }
+
+  /* SCAN SECTION */
+  .scan-section {
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+
+  .scan-box {
+    background: var(--card);
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    text-align: center;
+    transition: border-color 0.2s;
+    margin-bottom: 12px;
+  }
+
+  .scan-box.active { border-color: var(--gold); }
+
+  .scan-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .scan-input-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .scan-input-row input {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  .btn-scan {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background 0.2s, transform 0.1s;
+    flex-shrink: 0;
+  }
+
+  .btn-scan:active { transform: scale(0.96); background: var(--gold-dark); }
+
+  /* ASSET CARD */
+  .asset-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 20px;
+    display: none;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .asset-card.visible { display: block; }
+
+  .asset-header {
+    background: var(--gold);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .asset-header-icon {
+    font-size: 28px;
+  }
+
+  .asset-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--black);
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+  }
+
+  .asset-code {
+    font-size: 12px;
+    color: var(--black);
+    opacity: 0.7;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  .asset-body {
+    padding: 20px;
+  }
+
+  .asset-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .asset-field {
+    background: var(--black);
+    border-radius: 10px;
+    padding: 12px;
+  }
+
+  .asset-field-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .asset-field-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    word-break: break-all;
+  }
+
+  /* MOVEMENT FORM */
+  .movement-form {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+  }
+
+  .movement-title {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  .tipo-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .tipo-btn {
+    padding: 14px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: var(--black);
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .tipo-btn.selected-entrada {
+    border-color: var(--green);
+    background: rgba(46, 204, 113, 0.1);
+    color: var(--green);
+  }
+
+  .tipo-btn.selected-salida {
+    border-color: var(--red);
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--red);
+  }
+
+  .btn-registrar {
+    width: 100%;
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 16px;
+  }
+
+  .btn-registrar:active { transform: scale(0.98); background: var(--gold-dark); }
+  .btn-registrar:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--green);
+    color: var(--black);
+    padding: 14px 24px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 14px;
+    z-index: 999;
+    transition: transform 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .toast.error { background: var(--red); color: white; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* LOADING */
+  .loading {
+    display: none;
+    text-align: center;
+    padding: 30px;
+    color: var(--muted);
+  }
+
+  .loading.visible { display: block; }
+
+  .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 12px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* RECENT */
+  .recent-section { margin-top: 8px; }
+
+  .recent-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: slideUp 0.3s ease;
+  }
+
+  .recent-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .badge-entrada { background: rgba(46,204,113,0.15); }
+  .badge-salida { background: rgba(231,76,60,0.15); }
+
+  .recent-info { flex: 1; min-width: 0; }
+
+  .recent-name {
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .recent-meta {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .recent-time {
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  /* Camera modal */
+  .camera-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--black);
+    z-index: 200;
+    flex-direction: column;
+  }
+
+  .camera-modal.open { display: flex; }
+
+  .camera-header {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .camera-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+  }
+
+  .btn-close {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 8px 16px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+  }
+
+  #camera-view {
+    flex: 1;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .camera-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    top: 60px;
+  }
+
+  .scan-frame {
+    width: 220px;
+    height: 220px;
+    border: 3px solid var(--gold);
+    border-radius: 20px;
+    box-shadow: 0 0 0 2000px rgba(0,0,0,0.5);
+  }
+
+  .camera-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 0; right: 0;
+    text-align: center;
+    color: white;
+    font-size: 14px;
+    opacity: 0.8;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-icon">🎵</div>
+  <div>
+    <div class="logo-text">Golden Hour</div>
+    <div class="logo-sub">Control de Inventario</div>
+  </div>
+</header>
+
+<main>
+  <!-- CONFIG -->
+  <div class="config-section">
+    <div class="config-title">⚙️ Configuración API</div>
+    <div class="input-group">
+      <label>Token de Airtable</label>
+      <input type="password" id="api-token" placeholder="pat..." autocomplete="off">
+    </div>
+    <div class="input-group" style="margin-bottom:0">
+      <label>ID de la Base</label>
+      <input type="text" id="base-id" placeholder="appXXXXXXXXX" autocomplete="off">
+    </div>
+  </div>
+
+  <!-- SCAN -->
+  <div class="scan-section">
+    <div class="section-title">Escanear Equipo</div>
+    <div class="scan-box" id="scan-box">
+      <span class="scan-icon">📷</span>
+      <p style="color: var(--muted); font-size: 14px; margin-bottom: 16px;">Escanea el código QR del equipo<br>o ingrésalo manualmente</p>
+      <div class="scan-input-row">
+        <input type="text" id="qr-input" placeholder="GHT-WSBP0001" autocomplete="off" autocapitalize="characters">
+        <button class="btn-scan" onclick="openCamera()" title="Abrir cámara">📷</button>
+      </div>
+    </div>
+    <button class="btn-registrar" onclick="buscarActivo()" style="margin-top:0; font-size:18px; padding:14px;">
+      🔍 BUSCAR EQUIPO
+    </button>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Buscando equipo...</p>
+  </div>
+
+  <!-- ASSET CARD -->
+  <div class="asset-card" id="asset-card">
+    <div class="asset-header">
+      <div class="asset-header-icon">🎛️</div>
+      <div>
+        <div class="asset-name" id="asset-name">—</div>
+        <div class="asset-code" id="asset-code">—</div>
+      </div>
+    </div>
+    <div class="asset-body">
+      <div class="asset-fields">
+        <div class="asset-field">
+          <div class="asset-field-label">Modelo</div>
+          <div class="asset-field-value" id="asset-modelo">—</div>
+        </div>
+        <div class="asset-field">
+          <div class="asset-field-label">N° de Serie</div>
+          <div class="asset-field-value" id="asset-serie">—</div>
+        </div>
+        <div class="asset-field">
+          <div class="asset-field-label">Estado actual</div>
+          <div class="asset-field-value" id="asset-estado">—</div>
+        </div>
+        <div class="asset-field">
+          <div class="asset-field-label">Ubicación</div>
+          <div class="asset-field-value" id="asset-ubicacion">—</div>
+        </div>
+      </div>
+
+      <!-- MOVEMENT FORM -->
+      <div class="movement-form">
+        <div class="movement-title">📋 Registrar Movimiento</div>
+
+        <div class="tipo-toggle">
+          <button class="tipo-btn" id="btn-entrada" onclick="selectTipo('Entrada')">✅ Entrada</button>
+          <button class="tipo-btn" id="btn-salida" onclick="selectTipo('Salida')">🚀 Salida</button>
+        </div>
+
+        <div class="input-group">
+          <label>Responsable</label>
+          <input type="text" id="responsable-input" placeholder="Nombre del técnico o responsable">
+        </div>
+
+        <div class="input-group">
+          <label>Cliente / Evento</label>
+          <input type="text" id="evento-input" placeholder="Nombre del evento o cliente">
+        </div>
+
+        <div class="input-group" style="margin-bottom:0">
+          <label>Notas (opcional)</label>
+          <input type="text" id="notas-input" placeholder="Observaciones...">
+        </div>
+
+        <button class="btn-registrar" id="btn-registrar" onclick="registrarMovimiento()" disabled>
+          REGISTRAR MOVIMIENTO
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECENT -->
+  <div class="recent-section" id="recent-section" style="display:none">
+    <div class="section-title" style="font-size:22px; margin-bottom:12px;">Últimos Movimientos</div>
+    <div id="recent-list"></div>
+  </div>
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- CAMERA MODAL -->
+<div class="camera-modal" id="camera-modal">
+  <div class="camera-header">
+    <div class="camera-title">📷 Escanear QR</div>
+    <button class="btn-close" onclick="closeCamera()">Cerrar</button>
+  </div>
+  <video id="camera-view" autoplay playsinline></video>
+  <div class="camera-overlay">
+    <div class="scan-frame"></div>
+  </div>
+  <div class="camera-hint">Apunta el QR al recuadro dorado</div>
+  <canvas id="camera-canvas" style="display:none"></canvas>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<script>
+  const BASE_ID = 'appnmsWkFTXOCkzhx';
+  let currentAssetRecordId = null;
+  let selectedTipo = null;
+  let cameraStream = null;
+  let scanInterval = null;
+  let recentMovements = [];
+
+  // Load saved config
+  window.onload = () => {
+    const savedToken = localStorage.getItem('gh_token');
+    const savedBase = localStorage.getItem('gh_base');
+    if (savedToken) document.getElementById('api-token').value = savedToken;
+    if (savedBase) document.getElementById('base-id').value = savedBase;
+
+    document.getElementById('api-token').addEventListener('change', e => {
+      localStorage.setItem('gh_token', e.target.value);
+    });
+    document.getElementById('base-id').addEventListener('change', e => {
+      localStorage.setItem('gh_base', e.target.value);
+    });
+
+    document.getElementById('qr-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') buscarActivo();
+    });
+  };
+
+  function getConfig() {
+    const token = document.getElementById('api-token').value.trim();
+    const base = document.getElementById('base-id').value.trim() || BASE_ID;
+    return { token, base };
+  }
+
+  function showToast(msg, isError = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (isError ? ' error' : '') + ' show';
+    setTimeout(() => t.className = 'toast' + (isError ? ' error' : ''), 3000);
+  }
+
+  function setLoading(visible) {
+    document.getElementById('loading').className = 'loading' + (visible ? ' visible' : '');
+  }
+
+  function selectTipo(tipo) {
+    selectedTipo = tipo;
+    document.getElementById('btn-entrada').className = 'tipo-btn' + (tipo === 'Entrada' ? ' selected-entrada' : '');
+    document.getElementById('btn-salida').className = 'tipo-btn' + (tipo === 'Salida' ? ' selected-salida' : '');
+    document.getElementById('btn-registrar').disabled = false;
+  }
+
+  async function buscarActivo() {
+    const { token, base } = getConfig();
+    const qr = document.getElementById('qr-input').value.trim().toUpperCase();
+
+    if (!token) return showToast('⚠️ Ingresa tu token de Airtable', true);
+    if (!qr) return showToast('⚠️ Ingresa o escanea un código', true);
+
+    setLoading(true);
+    document.getElementById('asset-card').className = 'asset-card';
+    currentAssetRecordId = null;
+    selectedTipo = null;
+    document.getElementById('btn-entrada').className = 'tipo-btn';
+    document.getElementById('btn-salida').className = 'tipo-btn';
+    document.getElementById('btn-registrar').disabled = true;
+
+    try {
+      const filter = encodeURIComponent(`{Código de barras} = "${qr}"`);
+      const url = `https://api.airtable.com/v0/${base}/Activos?filterByFormula=${filter}`;
+      const res = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+
+      if (!data.records || data.records.length === 0) {
+        showToast('❌ Equipo no encontrado', true);
+        setLoading(false);
+        return;
+      }
+
+      const record = data.records[0];
+      const fields = record.fields;
+      currentAssetRecordId = record.id;
+
+      document.getElementById('asset-name').textContent = fields['Nombre/ID'] || '—';
+      document.getElementById('asset-code').textContent = fields['Código de barras'] || qr;
+      document.getElementById('asset-modelo').textContent = fields['Modelo'] || '—';
+      document.getElementById('asset-serie').textContent = fields['Número de serie'] || '—';
+      document.getElementById('asset-estado').textContent = fields['Estado'] || '—';
+      document.getElementById('asset-ubicacion').textContent = fields['Ubicación'] || '—';
+
+      document.getElementById('asset-card').className = 'asset-card visible';
+      document.getElementById('asset-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    } catch (err) {
+      showToast('❌ Error al conectar con Airtable', true);
+      console.error(err);
+    }
+
+    setLoading(false);
+  }
+
+  async function registrarMovimiento() {
+    const { token, base } = getConfig();
+    if (!currentAssetRecordId) return showToast('⚠️ Busca un equipo primero', true);
+    if (!selectedTipo) return showToast('⚠️ Selecciona Entrada o Salida', true);
+
+    const responsable = document.getElementById('responsable-input').value.trim();
+    const evento = document.getElementById('evento-input').value.trim();
+    const notas = document.getElementById('notas-input').value.trim();
+
+    if (!responsable) return showToast('⚠️ Ingresa el responsable', true);
+
+    const btn = document.getElementById('btn-registrar');
+    btn.disabled = true;
+    btn.textContent = 'REGISTRANDO...';
+
+    try {
+      const body = {
+        fields: {
+          'Activo': [currentAssetRecordId],
+          'Entrada/Salida': selectedTipo,
+          'Responsable': responsable,
+          'Fecha': new Date().toISOString().split('T')[0],
+        }
+      };
+
+      if (evento) body.fields['Cliente/Evento'] = evento;
+      if (notas) body.fields['Notas'] = notas;
+
+      const res = await fetch(`https://api.airtable.com/v0/${base}/Movimientos`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+
+      const data = await res.json();
+
+      if (data.id) {
+        showToast(`✅ ${selectedTipo} registrada correctamente`);
+
+        // Add to recent
+        const name = document.getElementById('asset-name').textContent;
+        const code = document.getElementById('asset-code').textContent;
+        addRecent(name, code, selectedTipo, responsable);
+
+        // Reset
+        document.getElementById('qr-input').value = '';
+        document.getElementById('responsable-input').value = '';
+        document.getElementById('evento-input').value = '';
+        document.getElementById('notas-input').value = '';
+        document.getElementById('asset-card').className = 'asset-card';
+        currentAssetRecordId = null;
+        selectedTipo = null;
+      } else {
+        showToast('❌ Error al registrar: ' + (data.error?.message || 'desconocido'), true);
+      }
+
+    } catch (err) {
+      showToast('❌ Error de conexión', true);
+      console.error(err);
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'REGISTRAR MOVIMIENTO';
+  }
+
+  function addRecent(name, code, tipo, responsable) {
+    const now = new Date();
+    const time = now.toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
+    const item = { name, code, tipo, responsable, time };
+    recentMovements.unshift(item);
+    if (recentMovements.length > 5) recentMovements.pop();
+    renderRecent();
+  }
+
+  function renderRecent() {
+    if (recentMovements.length === 0) return;
+    document.getElementById('recent-section').style.display = 'block';
+    const list = document.getElementById('recent-list');
+    list.innerHTML = recentMovements.map(m => `
+      <div class="recent-item">
+        <div class="recent-badge ${m.tipo === 'Entrada' ? 'badge-entrada' : 'badge-salida'}">
+          ${m.tipo === 'Entrada' ? '✅' : '🚀'}
+        </div>
+        <div class="recent-info">
+          <div class="recent-name">${m.name}</div>
+          <div class="recent-meta">${m.responsable} · ${m.code}</div>
+        </div>
+        <div class="recent-time">${m.time}</div>
+      </div>
+    `).join('');
+  }
+
+  // CAMERA
+  async function openCamera() {
+    document.getElementById('camera-modal').className = 'camera-modal open';
+    try {
+      cameraStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' }
+      });
+      const video = document.getElementById('camera-view');
+      video.srcObject = cameraStream;
+      video.play();
+      scanInterval = setInterval(scanFrame, 200);
+    } catch (err) {
+      showToast('❌ No se pudo acceder a la cámara', true);
+      closeCamera();
+    }
+  }
+
+  function closeCamera() {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(t => t.stop());
+      cameraStream = null;
+    }
+    if (scanInterval) { clearInterval(scanInterval); scanInterval = null; }
+    document.getElementById('camera-modal').className = 'camera-modal';
+  }
+
+  function scanFrame() {
+    const video = document.getElementById('camera-view');
+    const canvas = document.getElementById('camera-canvas');
+    if (video.readyState !== video.HAVE_ENOUGH_DATA) return;
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+    if (code) {
+      document.getElementById('qr-input').value = code.data;
+      closeCamera();
+      buscarActivo();
+    }
+  }
+</script>
+</body>
+</html>
