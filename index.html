@@ -782,7 +782,7 @@ document.getElementById('asset-name').textContent = Array.isArray(nombreRaw) ? n
     try {
       const body = {
         fields: {
-          'Activo': [currentAssetRecordId],
+          'Activo': currentAssetRecordId,
           'Entrada/Salida': selectedTipo,
           'Responsable': responsable,
         }
