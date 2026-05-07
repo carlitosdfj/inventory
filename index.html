@@ -781,6 +781,29 @@ document.getElementById('asset-name').textContent = Array.isArray(nombreRaw) ? n
 
     try {
       const body = {
+  fields: {
+    Activo: [currentAssetRecordId],
+    'Entrada/Salida': selectedTipo,
+    Responsable: responsable
+  }
+};
+
+console.log('currentAssetRecordId:', currentAssetRecordId);
+console.log('payload:', JSON.stringify(body, null, 2));
+
+const res = await fetch(`https://api.airtable.com/v0/${base}/Movimientos`, {
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(body)
+});
+
+const data = await res.json();
+console.log('status:', res.status);
+console.log('response:', data);
+      /*const body = {
         fields: {
           'Activo': [currentAssetRecordId],
           'Entrada/Salida': selectedTipo,
@@ -803,7 +826,7 @@ document.getElementById('asset-name').textContent = Array.isArray(nombreRaw) ? n
       const data = await res.json();
 
       if (data.id) {
-        showToast(`✅ ${selectedTipo} registrada correctamente`);
+        showToast(`✅ ${selectedTipo} registrada correctamente`);*/
 
         // Add to recent
         const name = document.getElementById('asset-name').textContent;
