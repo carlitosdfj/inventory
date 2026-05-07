@@ -790,7 +790,7 @@ document.getElementById('asset-name').textContent = Array.isArray(nombreRaw) ? n
 
       if (evento) body.fields['Cliente/Evento'] = evento;
       if (notas) body.fields['Notas'] = notas;
-
+      console.log('ENVIANDO:', JSON.stringify(body, null, 2));
       const res = await fetch(`https://api.airtable.com/v0/${base}/Movimientos`, {
         method: 'POST',
         headers: {
