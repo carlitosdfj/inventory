@@ -22,482 +22,93 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-  body {
-    background: var(--black);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  body { background: var(--black); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
 
-  /* HEADER */
-  header {
-    background: var(--dark);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
+  header { background: var(--dark); border-bottom: 1px solid var(--border); padding: 16px 20px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; }
 
-  .logo-icon {
-    width: 40px;
-    height: 40px;
-    background: var(--gold);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
-  }
+  .logo-icon { width: 40px; height: 40px; background: var(--gold); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; color: var(--text); line-height: 1; }
+  .logo-sub { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
 
-  .logo-text {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 1px;
-    color: var(--text);
-    line-height: 1;
-  }
+  main { padding: 24px 20px; max-width: 480px; margin: 0 auto; }
 
-  .logo-sub {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
+  .config-section { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; }
+  .config-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 600; }
+  .input-group { margin-bottom: 12px; }
 
-  /* MAIN */
-  main {
-    padding: 24px 20px;
-    max-width: 480px;
-    margin: 0 auto;
-  }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
 
-  /* CONFIG SECTION */
-  .config-section {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-
-  .config-title {
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 12px;
-    font-weight: 600;
-  }
-
-  .input-group {
-    margin-bottom: 12px;
-  }
-
-  label {
-    display: block;
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 6px;
-    font-weight: 500;
-  }
-
-  input, select {
-    width: 100%;
-    background: var(--black);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    padding: 12px 14px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  input:focus, select:focus {
-    border-color: var(--gold);
-  }
-
+  input, select { width: 100%; background: var(--black); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 12px 14px; outline: none; transition: border-color 0.2s; }
+  input:focus, select:focus { border-color: var(--gold); }
   input::placeholder { color: var(--muted); }
-
   select option { background: var(--dark); }
 
-  /* SCAN SECTION */
-  .scan-section {
-    margin-bottom: 20px;
-  }
+  .scan-section { margin-bottom: 20px; }
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; margin-bottom: 16px; color: var(--text); }
 
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    letter-spacing: 1px;
-    margin-bottom: 16px;
-    color: var(--text);
-  }
+  .scan-box { background: var(--card); border: 2px dashed var(--border); border-radius: var(--radius); padding: 24px 20px; text-align: center; margin-bottom: 12px; }
+  .scan-icon { font-size: 48px; margin-bottom: 12px; display: block; }
+  .scan-input-row { display: flex; gap: 10px; align-items: center; }
+  .scan-input-row input { flex: 1; font-size: 16px; font-weight: 600; letter-spacing: 1px; }
 
-  .scan-box {
-    background: var(--card);
-    border: 2px dashed var(--border);
-    border-radius: var(--radius);
-    padding: 24px 20px;
-    text-align: center;
-    transition: border-color 0.2s;
-    margin-bottom: 12px;
-  }
-
-  .scan-box.active { border-color: var(--gold); }
-
-  .scan-icon {
-    font-size: 48px;
-    margin-bottom: 12px;
-    display: block;
-  }
-
-  .scan-input-row {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-
-  .scan-input-row input {
-    flex: 1;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 1px;
-  }
-
-  .btn-scan {
-    background: var(--gold);
-    color: var(--black);
-    border: none;
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 20px;
-    cursor: pointer;
-    font-weight: 700;
-    transition: background 0.2s, transform 0.1s;
-    flex-shrink: 0;
-  }
-
+  .btn-scan { background: var(--gold); color: var(--black); border: none; border-radius: 10px; padding: 12px 16px; font-size: 20px; cursor: pointer; font-weight: 700; transition: background 0.2s, transform 0.1s; flex-shrink: 0; }
   .btn-scan:active { transform: scale(0.96); background: var(--gold-dark); }
 
-  /* ASSET CARD */
-  .asset-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    margin-bottom: 20px;
-    display: none;
-    animation: slideUp 0.3s ease;
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
+  .asset-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; display: none; animation: slideUp 0.3s ease; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
   .asset-card.visible { display: block; }
 
-  .asset-header {
-    background: var(--gold);
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+  .asset-header { background: var(--gold); padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+  .asset-header-icon { font-size: 28px; }
+  .asset-name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--black); letter-spacing: 0.5px; line-height: 1.1; }
+  .asset-code { font-size: 12px; color: var(--black); opacity: 0.7; font-weight: 600; letter-spacing: 1px; }
 
-  .asset-header-icon {
-    font-size: 28px;
-  }
+  .asset-body { padding: 20px; }
+  .asset-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .asset-field { background: var(--black); border-radius: 10px; padding: 12px; }
+  .asset-field-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; font-weight: 600; }
+  .asset-field-value { font-size: 14px; font-weight: 600; color: var(--text); word-break: break-all; }
 
-  .asset-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    color: var(--black);
-    letter-spacing: 0.5px;
-    line-height: 1.1;
-  }
+  .movement-form { border-top: 1px solid var(--border); padding-top: 20px; }
+  .movement-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; font-weight: 600; }
 
-  .asset-code {
-    font-size: 12px;
-    color: var(--black);
-    opacity: 0.7;
-    font-weight: 600;
-    letter-spacing: 1px;
-  }
+  .tipo-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .tipo-btn { padding: 14px; border-radius: 10px; border: 2px solid var(--border); background: var(--black); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .tipo-btn.selected-entrada { border-color: var(--green); background: rgba(46, 204, 113, 0.1); color: var(--green); }
+  .tipo-btn.selected-salida { border-color: var(--red); background: rgba(231, 76, 60, 0.1); color: var(--red); }
 
-  .asset-body {
-    padding: 20px;
-  }
-
-  .asset-fields {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .asset-field {
-    background: var(--black);
-    border-radius: 10px;
-    padding: 12px;
-  }
-
-  .asset-field-label {
-    font-size: 10px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 4px;
-    font-weight: 600;
-  }
-
-  .asset-field-value {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-    word-break: break-all;
-  }
-
-  /* MOVEMENT FORM */
-  .movement-form {
-    border-top: 1px solid var(--border);
-    padding-top: 20px;
-  }
-
-  .movement-title {
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 16px;
-    font-weight: 600;
-  }
-
-  .tipo-toggle {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-
-  .tipo-btn {
-    padding: 14px;
-    border-radius: 10px;
-    border: 2px solid var(--border);
-    background: var(--black);
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .tipo-btn.selected-entrada {
-    border-color: var(--green);
-    background: rgba(46, 204, 113, 0.1);
-    color: var(--green);
-  }
-
-  .tipo-btn.selected-salida {
-    border-color: var(--red);
-    background: rgba(231, 76, 60, 0.1);
-    color: var(--red);
-  }
-
-  .btn-registrar {
-    width: 100%;
-    background: var(--gold);
-    color: var(--black);
-    border: none;
-    border-radius: 12px;
-    padding: 16px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-    margin-top: 16px;
-  }
-
+  .btn-registrar { width: 100%; background: var(--gold); color: var(--black); border: none; border-radius: 12px; padding: 16px; font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; cursor: pointer; transition: background 0.2s, transform 0.1s; margin-top: 16px; }
   .btn-registrar:active { transform: scale(0.98); background: var(--gold-dark); }
   .btn-registrar:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
 
-  /* TOAST */
-  .toast {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: var(--green);
-    color: var(--black);
-    padding: 14px 24px;
-    border-radius: 100px;
-    font-weight: 700;
-    font-size: 14px;
-    z-index: 999;
-    transition: transform 0.3s ease;
-    white-space: nowrap;
-  }
-
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--green); color: var(--black); padding: 14px 24px; border-radius: 100px; font-weight: 700; font-size: 14px; z-index: 999; transition: transform 0.3s ease; white-space: nowrap; }
   .toast.error { background: var(--red); color: white; }
   .toast.show { transform: translateX(-50%) translateY(0); }
 
-  /* LOADING */
-  .loading {
-    display: none;
-    text-align: center;
-    padding: 30px;
-    color: var(--muted);
-  }
-
+  .loading { display: none; text-align: center; padding: 30px; color: var(--muted); }
   .loading.visible { display: block; }
-
-  .spinner {
-    width: 32px;
-    height: 32px;
-    border: 3px solid var(--border);
-    border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 12px;
-  }
-
+  .spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* RECENT */
   .recent-section { margin-top: 8px; }
-
-  .recent-item {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    animation: slideUp 0.3s ease;
-  }
-
-  .recent-badge {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    flex-shrink: 0;
-  }
-
+  .recent-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+  .recent-badge { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
   .badge-entrada { background: rgba(46,204,113,0.15); }
   .badge-salida { background: rgba(231,76,60,0.15); }
-
   .recent-info { flex: 1; min-width: 0; }
+  .recent-name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .recent-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .recent-time { font-size: 11px; color: var(--muted); flex-shrink: 0; }
 
-  .recent-name {
-    font-weight: 600;
-    font-size: 14px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .recent-meta {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
-
-  .recent-time {
-    font-size: 11px;
-    color: var(--muted);
-    flex-shrink: 0;
-  }
-
-  /* Camera modal */
-  .camera-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: var(--black);
-    z-index: 200;
-    flex-direction: column;
-  }
-
+  .camera-modal { display: none; position: fixed; inset: 0; background: var(--black); z-index: 200; flex-direction: column; }
   .camera-modal.open { display: flex; }
-
-  .camera-header {
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .camera-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 1px;
-  }
-
-  .btn-close {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    padding: 8px 16px;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-  }
-
-  #camera-view {
-    flex: 1;
-    object-fit: cover;
-    width: 100%;
-  }
-
-  .camera-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    top: 60px;
-  }
-
-  .scan-frame {
-    width: 220px;
-    height: 220px;
-    border: 3px solid var(--gold);
-    border-radius: 20px;
-    box-shadow: 0 0 0 2000px rgba(0,0,0,0.5);
-  }
-
-  .camera-hint {
-    position: absolute;
-    bottom: 40px;
-    left: 0; right: 0;
-    text-align: center;
-    color: white;
-    font-size: 14px;
-    opacity: 0.8;
-  }
+  .camera-header { padding: 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+  .camera-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; }
+  .btn-close { background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 8px 16px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 14px; }
+  #camera-view { flex: 1; object-fit: cover; width: 100%; }
+  .camera-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; top: 60px; }
+  .scan-frame { width: 220px; height: 220px; border: 3px solid var(--gold); border-radius: 20px; box-shadow: 0 0 0 2000px rgba(0,0,0,0.5); }
+  .camera-hint { position: absolute; bottom: 40px; left: 0; right: 0; text-align: center; color: white; font-size: 14px; opacity: 0.8; }
 </style>
 </head>
 <body>
@@ -506,16 +117,15 @@
   <div class="logo-icon">🎵</div>
   <div>
     <div class="logo-text">Golden Hour</div>
-    <div class="logo-sub">Control de Ingreso y Salida</div>
+    <div class="logo-sub">Control de Inventario</div>
   </div>
 </header>
 
 <main>
-  <!-- CONFIG -->
   <div class="config-section">
     <div class="config-title">⚙️ Configuración API</div>
     <div class="input-group">
-      <label>Token</label>
+      <label>Token de Airtable</label>
       <input type="password" id="api-token" placeholder="pat..." autocomplete="off">
     </div>
     <div class="input-group" style="margin-bottom:0">
@@ -524,15 +134,14 @@
     </div>
   </div>
 
-  <!-- SCAN -->
   <div class="scan-section">
     <div class="section-title">Escanear Equipo</div>
-    <div class="scan-box" id="scan-box">
+    <div class="scan-box">
       <span class="scan-icon">📷</span>
       <p style="color: var(--muted); font-size: 14px; margin-bottom: 16px;">Escanea el código QR del equipo<br>o ingrésalo manualmente</p>
       <div class="scan-input-row">
         <input type="text" id="qr-input" placeholder="GHT-WSBP0001" autocomplete="off" autocapitalize="characters">
-        <button class="btn-scan" onclick="openCamera()" title="Abrir cámara">📷</button>
+        <button class="btn-scan" onclick="openCamera()">📷</button>
       </div>
     </div>
     <button class="btn-registrar" onclick="buscarActivo()" style="margin-top:0; font-size:18px; padding:14px;">
@@ -540,13 +149,11 @@
     </button>
   </div>
 
-  <!-- LOADING -->
   <div class="loading" id="loading">
     <div class="spinner"></div>
     <p>Buscando equipo...</p>
   </div>
 
-  <!-- ASSET CARD -->
   <div class="asset-card" id="asset-card">
     <div class="asset-header">
       <div class="asset-header-icon">🎛️</div>
@@ -575,30 +182,24 @@
         </div>
       </div>
 
-      <!-- MOVEMENT FORM -->
       <div class="movement-form">
         <div class="movement-title">📋 Registrar Movimiento</div>
-
         <div class="tipo-toggle">
           <button class="tipo-btn" id="btn-entrada" onclick="selectTipo('Entrada')">✅ Entrada</button>
           <button class="tipo-btn" id="btn-salida" onclick="selectTipo('Salida')">🚀 Salida</button>
         </div>
-
         <div class="input-group">
           <label>Responsable</label>
           <input type="text" id="responsable-input" placeholder="Nombre del técnico o responsable">
         </div>
-
         <div class="input-group">
           <label>Cliente / Evento</label>
           <input type="text" id="evento-input" placeholder="Nombre del evento o cliente">
         </div>
-
         <div class="input-group" style="margin-bottom:0">
-          <label>Notas (opcional)</label>
+          <label>Nota (opcional)</label>
           <input type="text" id="notas-input" placeholder="Observaciones...">
         </div>
-
         <button class="btn-registrar" id="btn-registrar" onclick="registrarMovimiento()" disabled>
           REGISTRAR MOVIMIENTO
         </button>
@@ -606,17 +207,14 @@
     </div>
   </div>
 
-  <!-- RECENT -->
   <div class="recent-section" id="recent-section" style="display:none">
     <div class="section-title" style="font-size:22px; margin-bottom:12px;">Últimos Movimientos</div>
     <div id="recent-list"></div>
   </div>
 </main>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- CAMERA MODAL -->
 <div class="camera-modal" id="camera-modal">
   <div class="camera-header">
     <div class="camera-title">📷 Escanear QR</div>
@@ -632,7 +230,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
 <script>
-  const BASE_ID = 'appnmsWkFTXOCkzhx';
   let currentAssetRecordId = null;
   let currentQR = null;
   let selectedTipo = null;
@@ -640,29 +237,21 @@
   let scanInterval = null;
   let recentMovements = [];
 
-  // Load saved config
   window.onload = () => {
     const savedToken = localStorage.getItem('gh_token');
     const savedBase = localStorage.getItem('gh_base');
     if (savedToken) document.getElementById('api-token').value = savedToken;
     if (savedBase) document.getElementById('base-id').value = savedBase;
-
-    document.getElementById('api-token').addEventListener('change', e => {
-      localStorage.setItem('gh_token', e.target.value);
-    });
-    document.getElementById('base-id').addEventListener('change', e => {
-      localStorage.setItem('gh_base', e.target.value);
-    });
-
-    document.getElementById('qr-input').addEventListener('keydown', e => {
-      if (e.key === 'Enter') buscarActivo();
-    });
+    document.getElementById('api-token').addEventListener('change', e => localStorage.setItem('gh_token', e.target.value));
+    document.getElementById('base-id').addEventListener('change', e => localStorage.setItem('gh_base', e.target.value));
+    document.getElementById('qr-input').addEventListener('keydown', e => { if (e.key === 'Enter') buscarActivo(); });
   };
 
   function getConfig() {
-    const token = document.getElementById('api-token').value.trim();
-    const base = document.getElementById('base-id').value.trim() || BASE_ID;
-    return { token, base };
+    return {
+      token: document.getElementById('api-token').value.trim(),
+      base: document.getElementById('base-id').value.trim() || 'appnmsWkFTXOCkzhx'
+    };
   }
 
   function showToast(msg, isError = false) {
@@ -686,13 +275,13 @@
   async function buscarActivo() {
     const { token, base } = getConfig();
     const qr = document.getElementById('qr-input').value.trim().toUpperCase();
-
     if (!token) return showToast('⚠️ Ingresa tu token de Airtable', true);
     if (!qr) return showToast('⚠️ Ingresa o escanea un código', true);
 
     setLoading(true);
     document.getElementById('asset-card').className = 'asset-card';
     currentAssetRecordId = null;
+    currentQR = null;
     selectedTipo = null;
     document.getElementById('btn-entrada').className = 'tipo-btn';
     document.getElementById('btn-salida').className = 'tipo-btn';
@@ -700,8 +289,7 @@
 
     try {
       const filter = encodeURIComponent(`{Código de barras} = "${qr}"`);
-      const url = `https://api.airtable.com/v0/${base}/Activos?filterByFormula=${filter}`;
-      const res = await fetch(url, {
+      const res = await fetch(`https://api.airtable.com/v0/${base}/Activos?filterByFormula=${filter}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -718,12 +306,12 @@
       currentQR = qr;
 
       const nombreRaw = fields['Nombre/ID'];
-document.getElementById('asset-name').textContent = Array.isArray(nombreRaw) ? nombreRaw[0] : (nombreRaw || '—');
+      document.getElementById('asset-name').textContent = Array.isArray(nombreRaw) ? nombreRaw[0] : (nombreRaw || '—');
       document.getElementById('asset-code').textContent = fields['Código de barras'] || qr;
       document.getElementById('asset-serie').textContent = fields['Número de serie'] || '—';
       document.getElementById('asset-estado').textContent = fields['Estado'] || '—';
 
-      // Modelo es linked record a Equipos — traer nombre real
+      // Modelo — linked a Equipos
       const modeloId = Array.isArray(fields['Modelo']) ? fields['Modelo'][0] : null;
       if (modeloId) {
         try {
@@ -732,13 +320,13 @@ document.getElementById('asset-name').textContent = Array.isArray(nombreRaw) ? n
           });
           const mData = await mRes.json();
           document.getElementById('asset-modelo').textContent =
-            mData.fields?.['Nombre de Equipos'] || mData.fields?.['Nombre'] || mData.fields?.['Name'] || '—';
+            mData.fields?.['Nombre de equipos'] || mData.fields?.['Nombre'] || mData.fields?.['Name'] || '—';
         } catch { document.getElementById('asset-modelo').textContent = '—'; }
       } else {
         document.getElementById('asset-modelo').textContent = '—';
       }
 
-      // Ubicación es linked record a Ubicaciones — traer nombre real
+      // Ubicación — linked a Ubicaciones
       const ubicId = Array.isArray(fields['Ubicación']) ? fields['Ubicación'][0] : null;
       if (ubicId) {
         try {
@@ -747,7 +335,7 @@ document.getElementById('asset-name').textContent = Array.isArray(nombreRaw) ? n
           });
           const uData = await uRes.json();
           document.getElementById('asset-ubicacion').textContent =
-            uData.fields?.['Ubicación'] || uData.fields?.['Nombre'] || '—';
+            uData.fields?.['Ubicación'] || uData.fields?.['Nombre'] || uData.fields?.['Name'] || '—';
         } catch { document.getElementById('asset-ubicacion').textContent = '—'; }
       } else {
         document.getElementById('asset-ubicacion').textContent = '—';
@@ -780,70 +368,44 @@ document.getElementById('asset-name').textContent = Array.isArray(nombreRaw) ? n
     btn.textContent = 'REGISTRANDO...';
 
     try {
-      const body = {
-  fields: {
-    Activo: [currentAssetRecordId],
-    'Entrada/Salida': selectedTipo,
-    Responsable: responsable
-  }
-};
-
-console.log('currentAssetRecordId:', currentAssetRecordId);
-console.log('payload:', JSON.stringify(body, null, 2));
-
-const res = await fetch(`https://api.airtable.com/v0/${base}/Movimientos`, {
-  method: 'POST',
-  headers: {
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(body)
-});
-
-const data = await res.json();
-console.log('status:', res.status);
-console.log('response:', data);
-      const body = {
-        fields: {
-          'Activo': [currentAssetRecordId],
-          'Entrada/Salida': selectedTipo,
-          'Responsable': responsable,
-        }
+      const fields = {
+        'Activo': [currentAssetRecordId],
+        'Entrada/Salida': selectedTipo,
+        'Responsable': responsable,
+        'Fecha': new Date().toISOString().split('T')[0]
       };
 
-      if (evento) body.fields['Cliente/Evento'] = evento;
-      if (notas) body.fields['Notas'] = notas;
-      console.log('ENVIANDO:', JSON.stringify(body, null, 2));
+      if (evento) fields['Cliente/Evento'] = evento;
+      if (notas) fields['Nota'] = notas;
+
       const res = await fetch(`https://api.airtable.com/v0/${base}/Movimientos`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify({ fields })
       });
 
       const data = await res.json();
 
       if (data.id) {
         showToast(`✅ ${selectedTipo} registrada correctamente`);
-
-        // Add to recent
         const name = document.getElementById('asset-name').textContent;
         const code = document.getElementById('asset-code').textContent;
         addRecent(name, code, selectedTipo, responsable);
-
-        // Reset
         document.getElementById('qr-input').value = '';
         document.getElementById('responsable-input').value = '';
         document.getElementById('evento-input').value = '';
         document.getElementById('notas-input').value = '';
         document.getElementById('asset-card').className = 'asset-card';
+        document.getElementById('btn-entrada').className = 'tipo-btn';
+        document.getElementById('btn-salida').className = 'tipo-btn';
         currentAssetRecordId = null;
         currentQR = null;
         selectedTipo = null;
       } else {
-        showToast('❌ Error al registrar: ' + (data.error?.message || 'desconocido'), true);
+        showToast('❌ Error: ' + (data.error?.message || 'desconocido'), true);
       }
 
     } catch (err) {
@@ -856,10 +418,8 @@ console.log('response:', data);
   }
 
   function addRecent(name, code, tipo, responsable) {
-    const now = new Date();
-    const time = now.toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
-    const item = { name, code, tipo, responsable, time };
-    recentMovements.unshift(item);
+    const time = new Date().toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
+    recentMovements.unshift({ name, code, tipo, responsable, time });
     if (recentMovements.length > 5) recentMovements.pop();
     renderRecent();
   }
@@ -867,8 +427,7 @@ console.log('response:', data);
   function renderRecent() {
     if (recentMovements.length === 0) return;
     document.getElementById('recent-section').style.display = 'block';
-    const list = document.getElementById('recent-list');
-    list.innerHTML = recentMovements.map(m => `
+    document.getElementById('recent-list').innerHTML = recentMovements.map(m => `
       <div class="recent-item">
         <div class="recent-badge ${m.tipo === 'Entrada' ? 'badge-entrada' : 'badge-salida'}">
           ${m.tipo === 'Entrada' ? '✅' : '🚀'}
@@ -882,13 +441,10 @@ console.log('response:', data);
     `).join('');
   }
 
-  // CAMERA
   async function openCamera() {
     document.getElementById('camera-modal').className = 'camera-modal open';
     try {
-      cameraStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' }
-      });
+      cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
       const video = document.getElementById('camera-view');
       video.srcObject = cameraStream;
       video.play();
@@ -900,10 +456,7 @@ console.log('response:', data);
   }
 
   function closeCamera() {
-    if (cameraStream) {
-      cameraStream.getTracks().forEach(t => t.stop());
-      cameraStream = null;
-    }
+    if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
     if (scanInterval) { clearInterval(scanInterval); scanInterval = null; }
     document.getElementById('camera-modal').className = 'camera-modal';
   }
@@ -912,14 +465,12 @@ console.log('response:', data);
     const video = document.getElementById('camera-view');
     const canvas = document.getElementById('camera-canvas');
     if (video.readyState !== video.HAVE_ENOUGH_DATA) return;
-
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     const ctx = canvas.getContext('2d');
     ctx.drawImage(video, 0, 0);
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const code = jsQR(imageData.data, imageData.width, imageData.height);
-
     if (code) {
       document.getElementById('qr-input').value = code.data;
       closeCamera();
