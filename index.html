@@ -306,7 +306,8 @@
       currentQR = qr;
 
       document.getElementById('asset-name').textContent = fields['Nombre/ID'] || '—';
-      document.getElementById('asset-code').textContent = fields['Código de barras'] || qr;
+      const codigoRaw = fields['Código de barras'];
+      document.getElementById('asset-code').textContent = codigoRaw?.text || codigoRaw || qr;
       document.getElementById('asset-serie').textContent = fields['Número de serie'] || '—';
       document.getElementById('asset-estado').textContent = fields['Estado'] || '—';
 
@@ -368,10 +369,11 @@
 
     try {
       const fields = {
-  'Activo': [currentAssetRecordId],
-  'Entrada/Salida': selectedTipo,
-  'Responsable': responsable,
-  'Fecha': new Date().toISOString().split('T')[0]
+        'QR': { text: currentQR },
+        'Activo': [currentAssetRecordId],
+        'Entrada/Salida': selectedTipo,
+        'Responsable': responsable,
+        'Fecha': new Date().toISOString().split('T')[0]
 };
 
 if (evento) fields['Cliente/Evento'] = evento;
