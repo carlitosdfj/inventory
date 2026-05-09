@@ -305,8 +305,7 @@
       currentAssetRecordId = record.id;
       currentQR = qr;
 
-      const nombreRaw = fields['Nombre/ID'];
-      document.getElementById('asset-name').textContent = Array.isArray(nombreRaw) ? nombreRaw[0] : (nombreRaw || '—');
+      document.getElementById('asset-name').textContent = fields['Nombre/ID'] || '—';
       document.getElementById('asset-code').textContent = fields['Código de barras'] || qr;
       document.getElementById('asset-serie').textContent = fields['Número de serie'] || '—';
       document.getElementById('asset-estado').textContent = fields['Estado'] || '—';
