@@ -319,7 +319,7 @@
           });
           const mData = await mRes.json();
           document.getElementById('asset-modelo').textContent =
-            mData.fields?.['Nombre de equipos'] || mData.fields?.['Nombre'] || mData.fields?.['Name'] || '—';
+            mData.fields?.['Nombre de Equipos'] || mData.fields?.['Nombre'] || mData.fields?.['Name'] || '—';
         } catch { document.getElementById('asset-modelo').textContent = '—'; }
       } else {
         document.getElementById('asset-modelo').textContent = '—';
