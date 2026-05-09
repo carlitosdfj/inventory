@@ -369,10 +369,10 @@
 
     try {
       const fields = {
-        'QR': { text: currentQR },
-        'Entrada/Salida': selectedTipo,
-        'Responsable': responsable,
-        'Fecha': new Date().toISOString().split('T')[0]
+  'Activo': [currentAssetRecordId],
+  'Entrada/Salida': selectedTipo,
+  'Responsable': responsable,
+  'Fecha': new Date().toISOString().split('T')[0]
 };
 
 if (evento) fields['Cliente/Evento'] = evento;
