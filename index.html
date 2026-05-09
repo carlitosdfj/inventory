@@ -369,14 +369,14 @@
 
     try {
       const fields = {
-        'Activo': [currentAssetRecordId],
+        'QR': { text: currentQR },
         'Entrada/Salida': selectedTipo,
         'Responsable': responsable,
         'Fecha': new Date().toISOString().split('T')[0]
-      };
+};
 
-      if (evento) fields['Cliente/Evento'] = evento;
-      if (notas) fields['Nota'] = notas;
+if (evento) fields['Cliente/Evento'] = evento;
+if (notas) fields['Nota'] = notas;
 
       const res = await fetch(`https://api.airtable.com/v0/${base}/Movimientos`, {
         method: 'POST',
