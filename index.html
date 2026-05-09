@@ -803,7 +803,7 @@ const res = await fetch(`https://api.airtable.com/v0/${base}/Movimientos`, {
 const data = await res.json();
 console.log('status:', res.status);
 console.log('response:', data);
-      /*const body = {
+      const body = {
         fields: {
           'Activo': [currentAssetRecordId],
           'Entrada/Salida': selectedTipo,
@@ -826,7 +826,7 @@ console.log('response:', data);
       const data = await res.json();
 
       if (data.id) {
-        showToast(`✅ ${selectedTipo} registrada correctamente`);*/
+        showToast(`✅ ${selectedTipo} registrada correctamente`);
 
         // Add to recent
         const name = document.getElementById('asset-name').textContent;
