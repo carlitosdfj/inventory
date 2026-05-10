@@ -407,7 +407,13 @@
   async function openCamera() {
     document.getElementById('camera-modal').className = 'camera-modal open';
     try {
-      cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+      cameraStream = await navigator.mediaDevices.getUserMedia({ 
+  video: { 
+    facingMode: 'environment',
+    width: { ideal: 1280 }, // Mayor resolución para ver detalles del QR
+    height: { ideal: 720 }
+  } 
+});
       const video = document.getElementById('camera-view');
       video.srcObject = cameraStream;
       video.play();
