@@ -403,17 +403,11 @@
       </div>
     `).join('');
   }
-
+/*
   async function openCamera() {
     document.getElementById('camera-modal').className = 'camera-modal open';
     try {
-      cameraStream = await navigator.mediaDevices.getUserMedia({ 
-  video: { 
-    facingMode: 'environment',
-    width: { ideal: 1280 }, // Mayor resolución para ver detalles del QR
-    height: { ideal: 720 }
-  } 
-});
+      cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
       const video = document.getElementById('camera-view');
       video.srcObject = cameraStream;
       video.play();
@@ -423,7 +417,43 @@
       closeCamera();
     }
   }
+*/
+  async function openCamera() {
+    document.getElementById('camera-modal').className = 'camera-modal open';
+    try {
+        const constraints = {
+            video: {
+                // 'environment' le dice que use la trasera, pero añadimos más filtros:
+                facingMode: { ideal: "environment" },
+                // Forzamos un rango de resolución que suele estar ligado al lente x1
+                width: { min: 640, ideal: 1280, max: 1920 },
+                height: { min: 480, ideal: 720, max: 1080 }
+            }
+        };
 
+        cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+        
+        // --- TRUCO PARA FORZAR ENFOQUE ---
+        const track = cameraStream.getVideoTracks()[0];
+        const capabilities = track.getCapabilities ? track.getCapabilities() : {};
+        
+        // Si el navegador permite controlar el foco, lo activamos
+        if (capabilities.focusMode && capabilities.focusMode.includes('continuous')) {
+            await track.applyConstraints({
+                advanced: [{ focusMode: 'continuous' }]
+            });
+        }
+
+        const video = document.getElementById('camera-view');
+        video.srcObject = cameraStream;
+        video.play();
+        scanInterval = setInterval(scanFrame, 200);
+    } catch (err) {
+        console.error("Error de cámara:", err);
+        showToast('❌ No se pudo acceder a la cámara o lente x1', true);
+        closeCamera();
+    }
+}
   function closeCamera() {
     if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
     if (scanInterval) { clearInterval(scanInterval); scanInterval = null; }
