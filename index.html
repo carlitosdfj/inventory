@@ -21,27 +21,20 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
   body { background: var(--black); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
 
   header { background: var(--dark); border-bottom: 1px solid var(--border); padding: 16px 20px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; }
-
   .logo-icon { width: 40px; height: 40px; background: var(--gold); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
   .logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; color: var(--text); line-height: 1; }
   .logo-sub { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
 
   main { padding: 24px 20px; max-width: 480px; margin: 0 auto; }
 
-  .config-section { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; }
-  .config-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 600; }
   .input-group { margin-bottom: 12px; }
-
   label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
-
-  input, select { width: 100%; background: var(--black); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 12px 14px; outline: none; transition: border-color 0.2s; }
-  input:focus, select:focus { border-color: var(--gold); }
+  input { width: 100%; background: var(--black); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 12px 14px; outline: none; transition: border-color 0.2s; }
+  input:focus { border-color: var(--gold); }
   input::placeholder { color: var(--muted); }
-  select option { background: var(--dark); }
 
   .scan-section { margin-bottom: 20px; }
   .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; margin-bottom: 16px; color: var(--text); }
@@ -74,8 +67,8 @@
 
   .tipo-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
   .tipo-btn { padding: 14px; border-radius: 10px; border: 2px solid var(--border); background: var(--black); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-  .tipo-btn.selected-entrada { border-color: var(--green); background: rgba(46, 204, 113, 0.1); color: var(--green); }
-  .tipo-btn.selected-salida { border-color: var(--red); background: rgba(231, 76, 60, 0.1); color: var(--red); }
+  .tipo-btn.selected-entrada { border-color: var(--green); background: rgba(46,204,113,0.1); color: var(--green); }
+  .tipo-btn.selected-salida { border-color: var(--red); background: rgba(231,76,60,0.1); color: var(--red); }
 
   .btn-registrar { width: 100%; background: var(--gold); color: var(--black); border: none; border-radius: 12px; padding: 16px; font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; cursor: pointer; transition: background 0.2s, transform 0.1s; margin-top: 16px; }
   .btn-registrar:active { transform: scale(0.98); background: var(--gold-dark); }
@@ -122,18 +115,6 @@
 </header>
 
 <main>
-  <div class="config-section">
-    <div class="config-title">⚙️ Configuración API</div>
-    <div class="input-group">
-      <label>Token de Airtable</label>
-      <input type="password" id="api-token" placeholder="pat..." autocomplete="off">
-    </div>
-    <div class="input-group" style="margin-bottom:0">
-      <label>ID de la Base</label>
-      <input type="text" id="base-id" placeholder="appXXXXXXXXX" autocomplete="off">
-    </div>
-  </div>
-
   <div class="scan-section">
     <div class="section-title">Escanear Equipo</div>
     <div class="scan-box">
@@ -238,20 +219,16 @@
   let recentMovements = [];
 
   window.onload = () => {
-    const savedToken = localStorage.getItem('gh_token');
-    const savedBase = localStorage.getItem('gh_base');
-    if (savedToken) document.getElementById('api-token').value = savedToken;
-    if (savedBase) document.getElementById('base-id').value = savedBase;
-    document.getElementById('api-token').addEventListener('change', e => localStorage.setItem('gh_token', e.target.value));
-    document.getElementById('base-id').addEventListener('change', e => localStorage.setItem('gh_base', e.target.value));
-    document.getElementById('qr-input').addEventListener('keydown', e => { if (e.key === 'Enter') buscarActivo(); });
+    document.getElementById('qr-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') buscarActivo();
+    });
   };
 
-  function getConfig() {
-    return {
-      token: document.getElementById('api-token').value.trim(),
-      base: document.getElementById('base-id').value.trim() || 'appnmsWkFTXOCkzhx'
-    };
+  function api(table, recordId = null, filter = null) {
+    let url = `/api/airtable?table=${encodeURIComponent(table)}`;
+    if (recordId) url += `&recordId=${encodeURIComponent(recordId)}`;
+    if (filter) url += `&filterByFormula=${encodeURIComponent(filter)}`;
+    return url;
   }
 
   function showToast(msg, isError = false) {
@@ -273,9 +250,7 @@
   }
 
   async function buscarActivo() {
-    const { token, base } = getConfig();
     const qr = document.getElementById('qr-input').value.trim().toUpperCase();
-    if (!token) return showToast('⚠️ Ingresa tu token de Airtable', true);
     if (!qr) return showToast('⚠️ Ingresa o escanea un código', true);
 
     setLoading(true);
@@ -288,10 +263,7 @@
     document.getElementById('btn-registrar').disabled = true;
 
     try {
-      const filter = encodeURIComponent(`{Código de barras} = "${qr}"`);
-      const res = await fetch(`https://api.airtable.com/v0/${base}/Activos?filterByFormula=${filter}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await fetch(api('Activos', null, `{Código de barras} = "${qr}"`));
       const data = await res.json();
 
       if (!data.records || data.records.length === 0) {
@@ -315,12 +287,9 @@
       const modeloId = Array.isArray(fields['Modelo']) ? fields['Modelo'][0] : null;
       if (modeloId) {
         try {
-          const mRes = await fetch(`https://api.airtable.com/v0/${base}/Equipos/${modeloId}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          const mData = await mRes.json();
+          const mData = await (await fetch(api('Equipos', modeloId))).json();
           document.getElementById('asset-modelo').textContent =
-            mData.fields?.['Nombre de Equipos'] || mData.fields?.['Nombre'] || mData.fields?.['Name'] || '—';
+            mData.fields?.['Nombre de Equipos'] || mData.fields?.['Nombre'] || '—';
         } catch { document.getElementById('asset-modelo').textContent = '—'; }
       } else {
         document.getElementById('asset-modelo').textContent = '—';
@@ -330,12 +299,9 @@
       const ubicId = Array.isArray(fields['Ubicación']) ? fields['Ubicación'][0] : null;
       if (ubicId) {
         try {
-          const uRes = await fetch(`https://api.airtable.com/v0/${base}/Ubicaciones/${ubicId}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          const uData = await uRes.json();
+          const uData = await (await fetch(api('Ubicaciones', ubicId))).json();
           document.getElementById('asset-ubicacion').textContent =
-            uData.fields?.['Ubicación'] || uData.fields?.['Nombre'] || uData.fields?.['Name'] || '—';
+            uData.fields?.['Ubicación'] || uData.fields?.['Nombre'] || '—';
         } catch { document.getElementById('asset-ubicacion').textContent = '—'; }
       } else {
         document.getElementById('asset-ubicacion').textContent = '—';
@@ -345,7 +311,7 @@
       document.getElementById('asset-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     } catch (err) {
-      showToast('❌ Error al conectar con Airtable', true);
+      showToast('❌ Error al conectar', true);
       console.error(err);
     }
 
@@ -353,7 +319,6 @@
   }
 
   async function registrarMovimiento() {
-    const { token, base } = getConfig();
     if (!currentAssetRecordId) return showToast('⚠️ Busca un equipo primero', true);
     if (!selectedTipo) return showToast('⚠️ Selecciona Entrada o Salida', true);
 
@@ -369,22 +334,19 @@
 
     try {
       const fields = {
-        'QR': { text: currentQR },
         'Activo': [currentAssetRecordId],
+        'QR': { text: currentQR },
         'Entrada/Salida': selectedTipo,
         'Responsable': responsable,
         'Fecha': new Date().toISOString().split('T')[0]
-};
+      };
 
-if (evento) fields['Cliente/Evento'] = evento;
-if (notas) fields['Nota'] = notas;
+      if (evento) fields['Cliente/Evento'] = evento;
+      if (notas) fields['Nota'] = notas;
 
-      const res = await fetch(`https://api.airtable.com/v0/${base}/Movimientos`, {
+      const res = await fetch(api('Movimientos'), {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fields })
       });
 
@@ -450,7 +412,7 @@ if (notas) fields['Nota'] = notas;
       video.srcObject = cameraStream;
       video.play();
       scanInterval = setInterval(scanFrame, 200);
-    } catch (err) {
+    } catch {
       showToast('❌ No se pudo acceder a la cámara', true);
       closeCamera();
     }
