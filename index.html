@@ -420,38 +420,59 @@
 */
   async function openCamera() {
     document.getElementById('camera-modal').className = 'camera-modal open';
+    
     try {
+        // 1. Obtenemos todos los dispositivos de video
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+        
+        // 2. Buscamos la cámara trasera estándar (x1)
+        // Normalmente es la primera de la lista "back" o la que dice "main"
+        let selectedDeviceId = null;
+        
+        // Intentamos encontrar una que diga "back" pero que NO diga "telephoto" o "zoom"
+        const backCameras = videoDevices.filter(d => d.label.toLowerCase().includes('back'));
+        
+        if (backCameras.length > 0) {
+            // Elegimos la primera de la lista trasera, que suele ser la x1 principal
+            selectedDeviceId = backCameras[0].deviceId;
+        }
+
         const constraints = {
             video: {
-                // 'environment' le dice que use la trasera, pero añadimos más filtros:
-                facingMode: { ideal: "environment" },
-                // Forzamos un rango de resolución que suele estar ligado al lente x1
-                width: { min: 640, ideal: 1280, max: 1920 },
-                height: { min: 480, ideal: 720, max: 1080 }
+                deviceId: selectedDeviceId ? { exact: selectedDeviceId } : undefined,
+                facingMode: selectedDeviceId ? undefined : { exact: 'environment' },
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
             }
         };
 
         cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
         
-        // --- TRUCO PARA FORZAR ENFOQUE ---
-        const track = cameraStream.getVideoTracks()[0];
-        const capabilities = track.getCapabilities ? track.getCapabilities() : {};
-        
-        // Si el navegador permite controlar el foco, lo activamos
-        if (capabilities.focusMode && capabilities.focusMode.includes('continuous')) {
-            await track.applyConstraints({
-                advanced: [{ focusMode: 'continuous' }]
-            });
-        }
-
         const video = document.getElementById('camera-view');
         video.srcObject = cameraStream;
         video.play();
+        
+        // Ajuste de enfoque para dispositivos que lo soportan
+        const track = cameraStream.getVideoTracks()[0];
+        if (track.getCapabilities && track.getCapabilities().focusMode) {
+            track.applyConstraints({ advanced: [{ focusMode: 'continuous' }] }).catch(() => {});
+        }
+
         scanInterval = setInterval(scanFrame, 200);
+        
     } catch (err) {
-        console.error("Error de cámara:", err);
-        showToast('❌ No se pudo acceder a la cámara o lente x1', true);
-        closeCamera();
+        console.error("Error detallado:", err);
+        // Si falla el 'exact', reintentamos con lo básico para no dejar al usuario sin cámara
+        try {
+            cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+            document.getElementById('camera-view').srcObject = cameraStream;
+            document.getElementById('camera-view').play();
+            scanInterval = setInterval(scanFrame, 200);
+        } catch (e) {
+            showToast('❌ Error total de cámara', true);
+            closeCamera();
+        }
     }
 }
   function closeCamera() {
