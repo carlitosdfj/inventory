@@ -122,9 +122,7 @@
       <p style="color: var(--muted); font-size: 14px; margin-bottom: 16px;">Escanea el código QR del equipo<br>o ingrésalo manualmente</p>
       <div class="scan-input-row">
         <input type="text" id="qr-input" placeholder="GHT-WSBP0001" autocomplete="off" autocapitalize="characters">
-          <label for="qr-camera" class="btn-scan">📷</label>
-        <input type="file" id="qr-camera" accept="image/*" capture="environment" style="display:none" onchange="leerQRDeImagen(event)">
-</div>
+        <button class="btn-scan" onclick="openCamera()">📷</button>
       </div>
     </div>
     <button class="btn-registrar" onclick="buscarActivo()" style="margin-top:0; font-size:18px; padding:14px;">
@@ -203,7 +201,12 @@
     <div class="camera-title">📷 Escanear QR</div>
     <button class="btn-close" onclick="closeCamera()">Cerrar</button>
   </div>
-  <div id="camera-view" style="width:100%; height:calc(100vh - 65px);"></div>
+  <video id="camera-view" autoplay playsinline></video>
+  <div class="camera-overlay">
+    <div class="scan-frame"></div>
+  </div>
+  <div class="camera-hint">Apunta el QR al recuadro dorado</div>
+  <canvas id="camera-canvas" style="display:none"></canvas>
 </div>
 
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
@@ -400,52 +403,31 @@
       </div>
     `).join('');
   }
-async function scanFromFile(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const img = await createImageBitmap(file);
-  const canvas = document.getElementById('camera-canvas');
-  canvas.width = img.width;
-  canvas.height = img.height;
-  const ctx = canvas.getContext('2d');
-  ctx.drawImage(img, 0, 0);
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const code = jsQR(imageData.data, imageData.width, imageData.height);
-  if (code) {
-    document.getElementById('qr-input').value = code.data;
-    buscarActivo();
-  } else {
-    showToast('❌ No se pudo leer el QR', true);
-  }
-  event.target.value = '';
-}
 
-async function leerQRDeImagen(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  
-  const imageUrl = URL.createObjectURL(file);
-  const result = await Html5Qrcode.scanFile(new File([file], file.name), false);
-  
-  if (result) {
-    document.getElementById('qr-input').value = result;
-    buscarActivo();
-  } else {
-    showToast('❌ No se pudo leer el QR', true);
+  let barcodeDetector = null;
+  if ('BarcodeDetector' in window) {
+    barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
   }
-  
-  URL.revokeObjectURL(imageUrl);
-  event.target.value = '';
-}
 
-async function closeCamera() {
-  if (html5QrCode) {
-    await html5QrCode.stop().catch(() => {});
-    html5QrCode.clear();
-    html5QrCode = null;
+  async function openCamera() {
+    document.getElementById('camera-modal').className = 'camera-modal open';
+    try {
+      cameraStream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { ideal: 'environment' },
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        }
+      });
+      const video = document.getElementById('camera-view');
+      video.srcObject = cameraStream;
+      await video.play();
+      scanInterval = setInterval(scanFrame, 300);
+    } catch {
+      showToast('❌ No se pudo acceder a la cámara', true);
+      closeCamera();
+    }
   }
-  document.getElementById('camera-modal').className = 'camera-modal';
-}
 
   function closeCamera() {
     if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
@@ -453,18 +435,33 @@ async function closeCamera() {
     document.getElementById('camera-modal').className = 'camera-modal';
   }
 
-  function scanFrame() {
+  async function scanFrame() {
     const video = document.getElementById('camera-view');
-    const canvas = document.getElementById('camera-canvas');
     if (video.readyState !== video.HAVE_ENOUGH_DATA) return;
+
+    if (barcodeDetector) {
+      try {
+        const barcodes = await barcodeDetector.detect(video);
+        if (barcodes.length > 0) {
+          document.getElementById('qr-input').value = barcodes[0].rawValue;
+          closeCamera();
+          buscarActivo();
+        }
+      } catch {}
+      return;
+    }
+
+    const canvas = document.getElementById('camera-canvas');
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     const ctx = canvas.getContext('2d');
     ctx.drawImage(video, 0, 0);
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const code = jsQR(imageData.data, imageData.width, imageData.height);
+    const code = jsQR(imageData.data, imageData.width, imageData.height, {
+      inversionAttempts: 'dontInvert'
+    });
     if (code) {
-      document.getElementById('qr-input').value = code.data;
+      document.getElementById('qr-input').value = code.rawValue;
       closeCamera();
       buscarActivo();
     }
