@@ -122,8 +122,9 @@
       <p style="color: var(--muted); font-size: 14px; margin-bottom: 16px;">Escanea el código QR del equipo<br>o ingrésalo manualmente</p>
       <div class="scan-input-row">
         <input type="text" id="qr-input" placeholder="GHT-WSBP0001" autocomplete="off" autocapitalize="characters">
-        <input type="file" id="qr-file" accept="image/*" capture="environment" style="display:none" onchange="scanFromFile(event)">
-          <button class="btn-scan" onclick="document.getElementById('qr-file').click()">📷</button>
+          <label for="qr-camera" class="btn-scan">📷</label>
+        <input type="file" id="qr-camera" accept="image/*" capture="environment" style="display:none" onchange="leerQRDeImagen(event)">
+</div>
       </div>
     </div>
     <button class="btn-registrar" onclick="buscarActivo()" style="margin-top:0; font-size:18px; padding:14px;">
@@ -419,35 +420,22 @@ async function scanFromFile(event) {
   event.target.value = '';
 }
 
-let html5QrCode = null;
-
-async function openCamera() {
-  const modal = document.getElementById('camera-modal');
-  modal.className = 'camera-modal open';
-
-  await new Promise(r => setTimeout(r, 300));
-
-  html5QrCode = new Html5Qrcode('camera-view');
-  try {
-    await html5QrCode.start(
-      { facingMode: 'environment' },
-      {
-        fps: 10,
-        qrbox: { width: 250, height: 250 },
-        aspectRatio: 1.0
-      },
-      (decodedText) => {
-        document.getElementById('qr-input').value = decodedText;
-        closeCamera();
-        buscarActivo();
-      },
-      () => {}
-    );
-  } catch (err) {
-    console.error(err);
-    showToast('❌ No se pudo acceder a la cámara', true);
-    closeCamera();
+async function leerQRDeImagen(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  const imageUrl = URL.createObjectURL(file);
+  const result = await Html5Qrcode.scanFile(new File([file], file.name), false);
+  
+  if (result) {
+    document.getElementById('qr-input').value = result;
+    buscarActivo();
+  } else {
+    showToast('❌ No se pudo leer el QR', true);
   }
+  
+  URL.revokeObjectURL(imageUrl);
+  event.target.value = '';
 }
 
 async function closeCamera() {
