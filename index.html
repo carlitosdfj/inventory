@@ -415,8 +415,7 @@
       cameraStream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: { ideal: 'environment' },
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
+          zoom: 1.0
         }
       });
       const video = document.getElementById('camera-view');
