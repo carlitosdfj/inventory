@@ -202,15 +202,14 @@
     <div class="camera-title">📷 Escanear QR</div>
     <button class="btn-close" onclick="closeCamera()">Cerrar</button>
   </div>
-  <video id="camera-view" autoplay playsinline></video>
+  <div id="camera-view" style="width:100%;flex:1"></div>
   <div class="camera-overlay">
     <div class="scan-frame"></div>
   </div>
   <div class="camera-hint">Apunta el QR al recuadro dorado</div>
-  <canvas id="camera-canvas" style="display:none"></canvas>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <script>
   let currentAssetRecordId = null;
   let currentQR = null;
@@ -424,20 +423,34 @@ async function scanFromFile(event) {
   event.target.value = '';
 }
 
+let html5QrCode = null;
+
 async function openCamera() {
-  async function openCamera() {
-    document.getElementById('camera-modal').className = 'camera-modal open';
-    try {
-      cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-      const video = document.getElementById('camera-view');
-      video.srcObject = cameraStream;
-      video.play();
-      scanInterval = setInterval(scanFrame, 200);
-    } catch {
-      showToast('❌ No se pudo acceder a la cámara', true);
-      closeCamera();
-    }
+  document.getElementById('camera-modal').className = 'camera-modal open';
+  html5QrCode = new Html5Qrcode('camera-view');
+  try {
+    await html5QrCode.start(
+      { facingMode: 'environment' },
+      { fps: 10, qrbox: { width: 220, height: 220 } },
+      (decodedText) => {
+        document.getElementById('qr-input').value = decodedText;
+        closeCamera();
+        buscarActivo();
+      }
+    );
+  } catch (err) {
+    showToast('❌ No se pudo acceder a la cámara', true);
+    closeCamera();
   }
+}
+
+async function closeCamera() {
+  if (html5QrCode) {
+    await html5QrCode.stop().catch(() => {});
+    html5QrCode = null;
+  }
+  document.getElementById('camera-modal').className = 'camera-modal';
+}
 
   function closeCamera() {
     if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
