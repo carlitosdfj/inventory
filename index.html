@@ -28,43 +28,50 @@
   .logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; color: var(--text); line-height: 1; }
   .logo-sub { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
 
+  /* TABS */
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-bottom: 1px solid var(--border); background: var(--dark); position: sticky; top: 73px; z-index: 99; }
+  .tab { padding: 14px; text-align: center; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
   main { padding: 24px 20px; max-width: 480px; margin: 0 auto; }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
 
   .input-group { margin-bottom: 12px; }
   label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
-  input { width: 100%; background: var(--black); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 12px 14px; outline: none; transition: border-color 0.2s; }
-  input:focus { border-color: var(--gold); }
+  input, select { width: 100%; background: var(--black); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 12px 14px; outline: none; transition: border-color 0.2s; }
+  input:focus, select:focus { border-color: var(--gold); }
   input::placeholder { color: var(--muted); }
+  select option { background: var(--dark); }
 
-  .scan-section { margin-bottom: 20px; }
   .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; margin-bottom: 16px; color: var(--text); }
 
+  /* SCAN BOX */
   .scan-box { background: var(--card); border: 2px dashed var(--border); border-radius: var(--radius); padding: 24px 20px; text-align: center; margin-bottom: 12px; }
   .scan-icon { font-size: 48px; margin-bottom: 12px; display: block; }
   .scan-input-row { display: flex; gap: 10px; align-items: center; }
   .scan-input-row input { flex: 1; font-size: 16px; font-weight: 600; letter-spacing: 1px; }
-
   .btn-scan { background: var(--gold); color: var(--black); border: none; border-radius: 10px; padding: 12px 16px; font-size: 20px; cursor: pointer; font-weight: 700; transition: background 0.2s, transform 0.1s; flex-shrink: 0; }
   .btn-scan:active { transform: scale(0.96); background: var(--gold-dark); }
 
+  /* ASSET CARD */
   .asset-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; display: none; animation: slideUp 0.3s ease; }
   @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
   .asset-card.visible { display: block; }
-
   .asset-header { background: var(--gold); padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
   .asset-header-icon { font-size: 28px; }
   .asset-name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--black); letter-spacing: 0.5px; line-height: 1.1; }
   .asset-code { font-size: 12px; color: var(--black); opacity: 0.7; font-weight: 600; letter-spacing: 1px; }
-
   .asset-body { padding: 20px; }
   .asset-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
   .asset-field { background: var(--black); border-radius: 10px; padding: 12px; }
   .asset-field-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; font-weight: 600; }
   .asset-field-value { font-size: 14px; font-weight: 600; color: var(--text); word-break: break-all; }
 
+  /* MOVEMENT FORM */
   .movement-form { border-top: 1px solid var(--border); padding-top: 20px; }
   .movement-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; font-weight: 600; }
-
   .tipo-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
   .tipo-btn { padding: 14px; border-radius: 10px; border: 2px solid var(--border); background: var(--black); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .tipo-btn.selected-entrada { border-color: var(--green); background: rgba(46,204,113,0.1); color: var(--green); }
@@ -74,15 +81,40 @@
   .btn-registrar:active { transform: scale(0.98); background: var(--gold-dark); }
   .btn-registrar:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
 
+  /* STOCK SECTION */
+  .search-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+  .stock-results { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .stock-result-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; cursor: pointer; transition: border-color 0.2s; }
+  .stock-result-item:hover, .stock-result-item.selected { border-color: var(--gold); }
+  .stock-result-name { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+  .stock-result-meta { font-size: 12px; color: var(--muted); display: flex; gap: 12px; }
+  .stock-result-counts { display: flex; gap: 12px; margin-top: 10px; }
+  .stock-count-box { flex: 1; background: var(--black); border-radius: 8px; padding: 8px 12px; text-align: center; }
+  .stock-count-val { font-family: 'Bebas Neue', sans-serif; font-size: 22px; }
+  .stock-count-val.disponible { color: var(--green); }
+  .stock-count-val.afuera { color: var(--gold); }
+  .stock-count-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  .stock-form { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; display: none; animation: slideUp 0.3s ease; }
+  .stock-form.visible { display: block; }
+
+  .cantidad-row { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; }
+  .cantidad-row input { flex: 1; font-size: 24px; font-weight: 700; text-align: center; }
+  .btn-cantidad { background: var(--card); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 24px; padding: 10px 18px; cursor: pointer; font-weight: 700; }
+  .btn-cantidad:active { background: var(--border); }
+
+  /* TOAST */
   .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--green); color: var(--black); padding: 14px 24px; border-radius: 100px; font-weight: 700; font-size: 14px; z-index: 999; transition: transform 0.3s ease; white-space: nowrap; }
   .toast.error { background: var(--red); color: white; }
   .toast.show { transform: translateX(-50%) translateY(0); }
 
+  /* LOADING */
   .loading { display: none; text-align: center; padding: 30px; color: var(--muted); }
   .loading.visible { display: block; }
   .spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
+  /* RECENT */
   .recent-section { margin-top: 8px; }
   .recent-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
   .recent-badge { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
@@ -93,13 +125,14 @@
   .recent-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
   .recent-time { font-size: 11px; color: var(--muted); flex-shrink: 0; }
 
+  /* CAMERA */
   .camera-modal { display: none; position: fixed; inset: 0; background: var(--black); z-index: 200; flex-direction: column; }
   .camera-modal.open { display: flex; }
   .camera-header { padding: 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
   .camera-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; }
   .btn-close { background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 8px 16px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 14px; }
   #camera-view { flex: 1; object-fit: cover; width: 100%; }
-  .camera-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; top: 60px; }
+  .camera-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; top: 65px; }
   .scan-frame { width: 220px; height: 220px; border: 3px solid var(--gold); border-radius: 20px; box-shadow: 0 0 0 2000px rgba(0,0,0,0.5); }
   .camera-hint { position: absolute; bottom: 40px; left: 0; right: 0; text-align: center; color: white; font-size: 14px; opacity: 0.8; }
 </style>
@@ -114,9 +147,16 @@
   </div>
 </header>
 
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('activos')">🎛️ Activos</div>
+  <div class="tab" onclick="switchTab('stock')">📦 Stock</div>
+</div>
+
 <main>
-  <div class="scan-section">
-    <div class="section-title">Escanear Equipo</div>
+  <!-- ========== TAB ACTIVOS ========== -->
+  <div class="tab-content active" id="tab-activos">
+    <div class="section-title" style="margin-top:4px">Escanear Equipo</div>
     <div class="scan-box">
       <span class="scan-icon">📷</span>
       <p style="color: var(--muted); font-size: 14px; margin-bottom: 16px;">Escanea el código QR del equipo<br>o ingrésalo manualmente</p>
@@ -128,69 +168,129 @@
     <button class="btn-registrar" onclick="buscarActivo()" style="margin-top:0; font-size:18px; padding:14px;">
       🔍 BUSCAR EQUIPO
     </button>
-  </div>
 
-  <div class="loading" id="loading">
-    <div class="spinner"></div>
-    <p>Buscando equipo...</p>
-  </div>
+    <div class="loading" id="loading-activos">
+      <div class="spinner"></div>
+      <p>Buscando equipo...</p>
+    </div>
 
-  <div class="asset-card" id="asset-card">
-    <div class="asset-header">
-      <div class="asset-header-icon">🎛️</div>
-      <div>
-        <div class="asset-name" id="asset-name">—</div>
-        <div class="asset-code" id="asset-code">—</div>
+    <div class="asset-card" id="asset-card">
+      <div class="asset-header">
+        <div class="asset-header-icon">🎛️</div>
+        <div>
+          <div class="asset-name" id="asset-name">—</div>
+          <div class="asset-code" id="asset-code">—</div>
+        </div>
+      </div>
+      <div class="asset-body">
+        <div class="asset-fields">
+          <div class="asset-field">
+            <div class="asset-field-label">Modelo</div>
+            <div class="asset-field-value" id="asset-modelo">—</div>
+          </div>
+          <div class="asset-field">
+            <div class="asset-field-label">N° de Serie</div>
+            <div class="asset-field-value" id="asset-serie">—</div>
+          </div>
+          <div class="asset-field">
+            <div class="asset-field-label">Estado actual</div>
+            <div class="asset-field-value" id="asset-estado">—</div>
+          </div>
+          <div class="asset-field">
+            <div class="asset-field-label">Ubicación</div>
+            <div class="asset-field-value" id="asset-ubicacion">—</div>
+          </div>
+        </div>
+        <div class="movement-form">
+          <div class="movement-title">📋 Registrar Movimiento</div>
+          <div class="tipo-toggle">
+            <button class="tipo-btn" id="btn-entrada" onclick="selectTipo('Entrada')">✅ Entrada</button>
+            <button class="tipo-btn" id="btn-salida" onclick="selectTipo('Salida')">🚀 Salida</button>
+          </div>
+          <div class="input-group">
+            <label>Responsable</label>
+            <input type="text" id="responsable-input" placeholder="Nombre del técnico o responsable">
+          </div>
+          <div class="input-group">
+            <label>Cliente / Evento</label>
+            <input type="text" id="evento-input" placeholder="Nombre del evento o cliente">
+          </div>
+          <div class="input-group" style="margin-bottom:0">
+            <label>Nota (opcional)</label>
+            <input type="text" id="notas-input" placeholder="Observaciones...">
+          </div>
+          <button class="btn-registrar" id="btn-registrar" onclick="registrarMovimiento()" disabled>
+            REGISTRAR MOVIMIENTO
+          </button>
+        </div>
       </div>
     </div>
-    <div class="asset-body">
-      <div class="asset-fields">
-        <div class="asset-field">
-          <div class="asset-field-label">Modelo</div>
-          <div class="asset-field-value" id="asset-modelo">—</div>
-        </div>
-        <div class="asset-field">
-          <div class="asset-field-label">N° de Serie</div>
-          <div class="asset-field-value" id="asset-serie">—</div>
-        </div>
-        <div class="asset-field">
-          <div class="asset-field-label">Estado actual</div>
-          <div class="asset-field-value" id="asset-estado">—</div>
-        </div>
-        <div class="asset-field">
-          <div class="asset-field-label">Ubicación</div>
-          <div class="asset-field-value" id="asset-ubicacion">—</div>
-        </div>
-      </div>
 
-      <div class="movement-form">
-        <div class="movement-title">📋 Registrar Movimiento</div>
-        <div class="tipo-toggle">
-          <button class="tipo-btn" id="btn-entrada" onclick="selectTipo('Entrada')">✅ Entrada</button>
-          <button class="tipo-btn" id="btn-salida" onclick="selectTipo('Salida')">🚀 Salida</button>
-        </div>
-        <div class="input-group">
-          <label>Responsable</label>
-          <input type="text" id="responsable-input" placeholder="Nombre del técnico o responsable">
-        </div>
-        <div class="input-group">
-          <label>Cliente / Evento</label>
-          <input type="text" id="evento-input" placeholder="Nombre del evento o cliente">
-        </div>
-        <div class="input-group" style="margin-bottom:0">
-          <label>Nota (opcional)</label>
-          <input type="text" id="notas-input" placeholder="Observaciones...">
-        </div>
-        <button class="btn-registrar" id="btn-registrar" onclick="registrarMovimiento()" disabled>
-          REGISTRAR MOVIMIENTO
-        </button>
-      </div>
+    <div class="recent-section" id="recent-section" style="display:none">
+      <div class="section-title" style="font-size:22px; margin-bottom:12px;">Últimos Movimientos</div>
+      <div id="recent-list"></div>
     </div>
   </div>
 
-  <div class="recent-section" id="recent-section" style="display:none">
-    <div class="section-title" style="font-size:22px; margin-bottom:12px;">Últimos Movimientos</div>
-    <div id="recent-list"></div>
+  <!-- ========== TAB STOCK ========== -->
+  <div class="tab-content" id="tab-stock">
+    <div class="section-title" style="margin-top:4px">Buscar en Stock</div>
+
+    <div class="search-box">
+      <div class="scan-input-row">
+        <input type="text" id="stock-search" placeholder="Buscar cable, micrófono..." autocomplete="off" oninput="buscarStock()">
+      </div>
+    </div>
+
+    <div class="loading" id="loading-stock" style="display:none">
+      <div class="spinner"></div>
+      <p>Buscando...</p>
+    </div>
+
+    <div class="stock-results" id="stock-results"></div>
+
+    <!-- Stock movement form -->
+    <div class="stock-form" id="stock-form">
+      <div class="asset-header" style="background:var(--gold); border-radius:12px; margin-bottom:16px;">
+        <div class="asset-header-icon">📦</div>
+        <div>
+          <div class="asset-name" id="stock-selected-name">—</div>
+          <div class="asset-code" id="stock-selected-meta">—</div>
+        </div>
+      </div>
+
+      <div class="movement-title">📋 Registrar Movimiento</div>
+      <div class="tipo-toggle">
+        <button class="tipo-btn" id="stock-btn-entrada" onclick="selectStockTipo('Entrada')">✅ Entrada</button>
+        <button class="tipo-btn" id="stock-btn-salida" onclick="selectStockTipo('Salida')">🚀 Salida</button>
+      </div>
+
+      <div class="input-group">
+        <label>Cantidad de unidades</label>
+        <div class="cantidad-row">
+          <button class="btn-cantidad" onclick="cambiarCantidad(-1)">−</button>
+          <input type="number" id="stock-cantidad" value="1" min="1">
+          <button class="btn-cantidad" onclick="cambiarCantidad(1)">+</button>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>Responsable</label>
+        <input type="text" id="stock-responsable" placeholder="Nombre del técnico o responsable">
+      </div>
+      <div class="input-group">
+        <label>Cliente / Evento</label>
+        <input type="text" id="stock-evento" placeholder="Nombre del evento o cliente">
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <label>Nota (opcional)</label>
+        <input type="text" id="stock-nota" placeholder="Observaciones...">
+      </div>
+
+      <button class="btn-registrar" id="btn-registrar-stock" onclick="registrarStock()">
+        REGISTRAR MOVIMIENTO
+      </button>
+    </div>
   </div>
 </main>
 
@@ -209,21 +309,39 @@
   <canvas id="camera-canvas" style="display:none"></canvas>
 </div>
 
-<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
 <script>
+  // State
   let currentAssetRecordId = null;
   let currentQR = null;
   let selectedTipo = null;
+  let selectedStockTipo = null;
+  let selectedStockRecord = null;
   let cameraStream = null;
   let scanInterval = null;
   let recentMovements = [];
+  let stockSearchTimeout = null;
+  let barcodeDetector = null;
+
+  if ('BarcodeDetector' in window) {
+    barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
+  }
 
   window.onload = () => {
     document.getElementById('qr-input').addEventListener('keydown', e => {
       if (e.key === 'Enter') buscarActivo();
     });
+
+    // Leer QR desde URL (para cuando iPhone lea el QR nativo)
+    const params = new URLSearchParams(window.location.search);
+    const qrParam = params.get('qr');
+    if (qrParam) {
+      document.getElementById('qr-input').value = qrParam;
+      buscarActivo();
+    }
   };
 
+  // API helper
   function api(table, recordId = null, filter = null) {
     let url = `/api/airtable?table=${encodeURIComponent(table)}`;
     if (recordId) url += `&recordId=${encodeURIComponent(recordId)}`;
@@ -231,6 +349,7 @@
     return url;
   }
 
+  // Toast
   function showToast(msg, isError = false) {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -238,9 +357,16 @@
     setTimeout(() => t.className = 'toast' + (isError ? ' error' : ''), 3000);
   }
 
-  function setLoading(visible) {
-    document.getElementById('loading').className = 'loading' + (visible ? ' visible' : '');
+  // Tab switching
+  function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      t.classList.toggle('active', (i === 0 && tab === 'activos') || (i === 1 && tab === 'stock'));
+    });
+    document.getElementById('tab-activos').classList.toggle('active', tab === 'activos');
+    document.getElementById('tab-stock').classList.toggle('active', tab === 'stock');
   }
+
+  // =================== ACTIVOS ===================
 
   function selectTipo(tipo) {
     selectedTipo = tipo;
@@ -253,7 +379,7 @@
     const qr = document.getElementById('qr-input').value.trim().toUpperCase();
     if (!qr) return showToast('⚠️ Ingresa o escanea un código', true);
 
-    setLoading(true);
+    document.getElementById('loading-activos').className = 'loading visible';
     document.getElementById('asset-card').className = 'asset-card';
     currentAssetRecordId = null;
     currentQR = null;
@@ -268,7 +394,7 @@
 
       if (!data.records || data.records.length === 0) {
         showToast('❌ Equipo no encontrado', true);
-        setLoading(false);
+        document.getElementById('loading-activos').className = 'loading';
         return;
       }
 
@@ -283,39 +409,30 @@
       document.getElementById('asset-serie').textContent = fields['Número de serie'] || '—';
       document.getElementById('asset-estado').textContent = fields['Estado'] || '—';
 
-      // Modelo — linked a Equipos
       const modeloId = Array.isArray(fields['Modelo']) ? fields['Modelo'][0] : null;
       if (modeloId) {
         try {
           const mData = await (await fetch(api('Equipos', modeloId))).json();
-          document.getElementById('asset-modelo').textContent =
-            mData.fields?.['Nombre de Equipos'] || mData.fields?.['Nombre'] || '—';
+          document.getElementById('asset-modelo').textContent = mData.fields?.['Nombre de Equipos'] || '—';
         } catch { document.getElementById('asset-modelo').textContent = '—'; }
-      } else {
-        document.getElementById('asset-modelo').textContent = '—';
-      }
+      } else { document.getElementById('asset-modelo').textContent = '—'; }
 
-      // Ubicación — linked a Ubicaciones
       const ubicId = Array.isArray(fields['Ubicación']) ? fields['Ubicación'][0] : null;
       if (ubicId) {
         try {
           const uData = await (await fetch(api('Ubicaciones', ubicId))).json();
-          document.getElementById('asset-ubicacion').textContent =
-            uData.fields?.['Ubicación'] || uData.fields?.['Nombre'] || '—';
+          document.getElementById('asset-ubicacion').textContent = uData.fields?.['Ubicación'] || '—';
         } catch { document.getElementById('asset-ubicacion').textContent = '—'; }
-      } else {
-        document.getElementById('asset-ubicacion').textContent = '—';
-      }
+      } else { document.getElementById('asset-ubicacion').textContent = '—'; }
 
       document.getElementById('asset-card').className = 'asset-card visible';
       document.getElementById('asset-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     } catch (err) {
       showToast('❌ Error al conectar', true);
-      console.error(err);
     }
 
-    setLoading(false);
+    document.getElementById('loading-activos').className = 'loading';
   }
 
   async function registrarMovimiento() {
@@ -325,7 +442,6 @@
     const responsable = document.getElementById('responsable-input').value.trim();
     const evento = document.getElementById('evento-input').value.trim();
     const notas = document.getElementById('notas-input').value.trim();
-
     if (!responsable) return showToast('⚠️ Ingresa el responsable', true);
 
     const btn = document.getElementById('btn-registrar');
@@ -340,7 +456,6 @@
         'Responsable': responsable,
         'Fecha': new Date().toISOString().split('T')[0]
       };
-
       if (evento) fields['Cliente/Evento'] = evento;
       if (notas) fields['Nota'] = notas;
 
@@ -349,14 +464,11 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fields })
       });
-
       const data = await res.json();
 
       if (data.id) {
         showToast(`✅ ${selectedTipo} registrada correctamente`);
-        const name = document.getElementById('asset-name').textContent;
-        const code = document.getElementById('asset-code').textContent;
-        addRecent(name, code, selectedTipo, responsable);
+        addRecent(document.getElementById('asset-name').textContent, currentQR, selectedTipo, responsable);
         document.getElementById('qr-input').value = '';
         document.getElementById('responsable-input').value = '';
         document.getElementById('evento-input').value = '';
@@ -364,17 +476,11 @@
         document.getElementById('asset-card').className = 'asset-card';
         document.getElementById('btn-entrada').className = 'tipo-btn';
         document.getElementById('btn-salida').className = 'tipo-btn';
-        currentAssetRecordId = null;
-        currentQR = null;
-        selectedTipo = null;
+        currentAssetRecordId = null; currentQR = null; selectedTipo = null;
       } else {
         showToast('❌ Error: ' + (data.error?.message || 'desconocido'), true);
       }
-
-    } catch (err) {
-      showToast('❌ Error de conexión', true);
-      console.error(err);
-    }
+    } catch { showToast('❌ Error de conexión', true); }
 
     btn.disabled = false;
     btn.textContent = 'REGISTRAR MOVIMIENTO';
@@ -384,17 +490,10 @@
     const time = new Date().toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
     recentMovements.unshift({ name, code, tipo, responsable, time });
     if (recentMovements.length > 5) recentMovements.pop();
-    renderRecent();
-  }
-
-  function renderRecent() {
-    if (recentMovements.length === 0) return;
     document.getElementById('recent-section').style.display = 'block';
     document.getElementById('recent-list').innerHTML = recentMovements.map(m => `
       <div class="recent-item">
-        <div class="recent-badge ${m.tipo === 'Entrada' ? 'badge-entrada' : 'badge-salida'}">
-          ${m.tipo === 'Entrada' ? '✅' : '🚀'}
-        </div>
+        <div class="recent-badge ${m.tipo === 'Entrada' ? 'badge-entrada' : 'badge-salida'}">${m.tipo === 'Entrada' ? '✅' : '🚀'}</div>
         <div class="recent-info">
           <div class="recent-name">${m.name}</div>
           <div class="recent-meta">${m.responsable} · ${m.code}</div>
@@ -404,19 +503,149 @@
     `).join('');
   }
 
-  let barcodeDetector = null;
-  if ('BarcodeDetector' in window) {
-    barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
+  // =================== STOCK ===================
+
+  async function buscarStock() {
+    clearTimeout(stockSearchTimeout);
+    const query = document.getElementById('stock-search').value.trim().toLowerCase();
+
+    if (query.length < 2) {
+      document.getElementById('stock-results').innerHTML = '';
+      document.getElementById('stock-form').className = 'stock-form';
+      return;
+    }
+
+    stockSearchTimeout = setTimeout(async () => {
+      document.getElementById('loading-stock').style.display = 'block';
+      document.getElementById('stock-form').className = 'stock-form';
+
+      try {
+        const filter = `OR(SEARCH("${query}", LOWER({Nombre})), SEARCH("${query}", LOWER({Categoría})), SEARCH("${query}", LOWER({Marca})), SEARCH("${query}", LOWER({Modelo})))`;
+        const res = await fetch(api('Stock', null, filter));
+        const data = await res.json();
+
+        const results = data.records || [];
+        const container = document.getElementById('stock-results');
+
+        if (results.length === 0) {
+          container.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted)">No se encontraron resultados</div>`;
+        } else {
+          container.innerHTML = results.map(r => {
+            const f = r.fields;
+            const disponible = f['Cantidad Disponible'] || 0;
+            const afuera = f['Afuera'] || 0;
+            return `
+              <div class="stock-result-item" onclick="seleccionarStock('${r.id}', '${(f['Nombre'] || '').replace(/'/g, "\\'")}', '${(f['Categoría'] || '').replace(/'/g, "\\'")}', '${(f['Marca'] || '').replace(/'/g, "\\'")}', '${(f['Medida'] || '').replace(/'/g, "\\'")}', ${disponible})">
+                <div class="stock-result-name">${f['Nombre'] || '—'} ${f['Marca'] ? '· ' + f['Marca'] : ''} ${f['Modelo'] ? f['Modelo'] : ''}</div>
+                <div class="stock-result-meta">
+                  <span>${f['Categoría'] || '—'}</span>
+                  ${f['Medida'] ? `<span>${f['Medida']}</span>` : ''}
+                </div>
+                <div class="stock-result-counts">
+                  <div class="stock-count-box">
+                    <div class="stock-count-val disponible">${disponible}</div>
+                    <div class="stock-count-label">Disponible</div>
+                  </div>
+                  <div class="stock-count-box">
+                    <div class="stock-count-val afuera">${afuera}</div>
+                    <div class="stock-count-label">Afuera</div>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      } catch { showToast('❌ Error al buscar', true); }
+
+      document.getElementById('loading-stock').style.display = 'none';
+    }, 400);
   }
+
+  function seleccionarStock(id, nombre, categoria, marca, medida, disponible) {
+    selectedStockRecord = { id, disponible };
+    selectedStockTipo = null;
+    document.getElementById('stock-btn-entrada').className = 'tipo-btn';
+    document.getElementById('stock-btn-salida').className = 'tipo-btn';
+    document.getElementById('stock-selected-name').textContent = `${nombre} ${marca}`.trim();
+    document.getElementById('stock-selected-meta').textContent = `${categoria}${medida ? ' · ' + medida : ''} · ${disponible} disponibles`;
+    document.getElementById('stock-cantidad').value = 1;
+    document.getElementById('stock-responsable').value = '';
+    document.getElementById('stock-evento').value = '';
+    document.getElementById('stock-nota').value = '';
+    document.getElementById('stock-form').className = 'stock-form visible';
+    document.getElementById('stock-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function selectStockTipo(tipo) {
+    selectedStockTipo = tipo;
+    document.getElementById('stock-btn-entrada').className = 'tipo-btn' + (tipo === 'Entrada' ? ' selected-entrada' : '');
+    document.getElementById('stock-btn-salida').className = 'tipo-btn' + (tipo === 'Salida' ? ' selected-salida' : '');
+  }
+
+  function cambiarCantidad(delta) {
+    const input = document.getElementById('stock-cantidad');
+    const val = Math.max(1, parseInt(input.value || 1) + delta);
+    input.value = val;
+  }
+
+  async function registrarStock() {
+    if (!selectedStockRecord) return showToast('⚠️ Selecciona un item', true);
+    if (!selectedStockTipo) return showToast('⚠️ Selecciona Entrada o Salida', true);
+
+    const cantidad = parseInt(document.getElementById('stock-cantidad').value) || 1;
+    const responsable = document.getElementById('stock-responsable').value.trim();
+    if (!responsable) return showToast('⚠️ Ingresa el responsable', true);
+
+    const disponible = selectedStockRecord.disponible;
+    if (selectedStockTipo === 'Salida' && cantidad > disponible) {
+      return showToast(`⚠️ Solo hay ${disponible} disponibles`, true);
+    }
+
+    const btn = document.getElementById('btn-registrar-stock');
+    btn.disabled = true;
+    btn.textContent = 'REGISTRANDO...';
+
+    try {
+      const nuevaCantidad = selectedStockTipo === 'Salida'
+        ? disponible - cantidad
+        : disponible + cantidad;
+
+      const res = await fetch(api('Stock', selectedStockRecord.id), {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fields: { 'Cantidad Disponible': nuevaCantidad } })
+      });
+      const data = await res.json();
+
+      if (data.id) {
+        showToast(`✅ ${selectedStockTipo} de ${cantidad} unidades registrada`);
+        selectedStockRecord.disponible = nuevaCantidad;
+        document.getElementById('stock-selected-meta').textContent =
+          document.getElementById('stock-selected-meta').textContent.replace(/\d+ disponibles/, `${nuevaCantidad} disponibles`);
+        document.getElementById('stock-cantidad').value = 1;
+        document.getElementById('stock-responsable').value = '';
+        document.getElementById('stock-evento').value = '';
+        document.getElementById('stock-nota').value = '';
+        document.getElementById('stock-btn-entrada').className = 'tipo-btn';
+        document.getElementById('stock-btn-salida').className = 'tipo-btn';
+        selectedStockTipo = null;
+        buscarStock();
+      } else {
+        showToast('❌ Error: ' + (data.error?.message || 'desconocido'), true);
+      }
+    } catch { showToast('❌ Error de conexión', true); }
+
+    btn.disabled = false;
+    btn.textContent = 'REGISTRAR MOVIMIENTO';
+  }
+
+  // =================== CAMERA ===================
 
   async function openCamera() {
     document.getElementById('camera-modal').className = 'camera-modal open';
     try {
       cameraStream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: { ideal: 'environment' },
-          zoom: 1.0
-        }
+        video: { facingMode: { ideal: 'environment' } }
       });
       const video = document.getElementById('camera-view');
       video.srcObject = cameraStream;
@@ -456,9 +685,7 @@
     const ctx = canvas.getContext('2d');
     ctx.drawImage(video, 0, 0);
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const code = jsQR(imageData.data, imageData.width, imageData.height, {
-      inversionAttempts: 'dontInvert'
-    });
+    const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'dontInvert' });
     if (code) {
       document.getElementById('qr-input').value = code.rawValue;
       closeCamera();
