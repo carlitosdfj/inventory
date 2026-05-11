@@ -122,7 +122,8 @@
       <p style="color: var(--muted); font-size: 14px; margin-bottom: 16px;">Escanea el código QR del equipo<br>o ingrésalo manualmente</p>
       <div class="scan-input-row">
         <input type="text" id="qr-input" placeholder="GHT-WSBP0001" autocomplete="off" autocapitalize="characters">
-        <button class="btn-scan" onclick="openCamera()">📷</button>
+        <input type="file" id="qr-file" accept="image/*" capture="environment" style="display:none" onchange="scanFromFile(event)">
+          <button class="btn-scan" onclick="document.getElementById('qr-file').click()">📷</button>
       </div>
     </div>
     <button class="btn-registrar" onclick="buscarActivo()" style="margin-top:0; font-size:18px; padding:14px;">
@@ -403,7 +404,27 @@
       </div>
     `).join('');
   }
-/*
+async function scanFromFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const img = await createImageBitmap(file);
+  const canvas = document.getElementById('camera-canvas');
+  canvas.width = img.width;
+  canvas.height = img.height;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const code = jsQR(imageData.data, imageData.width, imageData.height);
+  if (code) {
+    document.getElementById('qr-input').value = code.data;
+    buscarActivo();
+  } else {
+    showToast('❌ No se pudo leer el QR', true);
+  }
+  event.target.value = '';
+}
+
+async function openCamera() {
   async function openCamera() {
     document.getElementById('camera-modal').className = 'camera-modal open';
     try {
@@ -417,64 +438,7 @@
       closeCamera();
     }
   }
-*/
-  async function openCamera() {
-    document.getElementById('camera-modal').className = 'camera-modal open';
-    
-    try {
-        // 1. Obtenemos todos los dispositivos de video
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const videoDevices = devices.filter(device => device.kind === 'videoinput');
-        
-        // 2. Buscamos la cámara trasera estándar (x1)
-        // Normalmente es la primera de la lista "back" o la que dice "main"
-        let selectedDeviceId = null;
-        
-        // Intentamos encontrar una que diga "back" pero que NO diga "telephoto" o "zoom"
-        const backCameras = videoDevices.filter(d => d.label.toLowerCase().includes('back'));
-        
-        if (backCameras.length > 0) {
-            // Elegimos la primera de la lista trasera, que suele ser la x1 principal
-            selectedDeviceId = backCameras[0].deviceId;
-        }
 
-        const constraints = {
-            video: {
-                deviceId: selectedDeviceId ? { exact: selectedDeviceId } : undefined,
-                facingMode: selectedDeviceId ? undefined : { exact: 'environment' },
-                width: { ideal: 1280 },
-                height: { ideal: 720 }
-            }
-        };
-
-        cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
-        
-        const video = document.getElementById('camera-view');
-        video.srcObject = cameraStream;
-        video.play();
-        
-        // Ajuste de enfoque para dispositivos que lo soportan
-        const track = cameraStream.getVideoTracks()[0];
-        if (track.getCapabilities && track.getCapabilities().focusMode) {
-            track.applyConstraints({ advanced: [{ focusMode: 'continuous' }] }).catch(() => {});
-        }
-
-        scanInterval = setInterval(scanFrame, 200);
-        
-    } catch (err) {
-        console.error("Error detallado:", err);
-        // Si falla el 'exact', reintentamos con lo básico para no dejar al usuario sin cámara
-        try {
-            cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-            document.getElementById('camera-view').srcObject = cameraStream;
-            document.getElementById('camera-view').play();
-            scanInterval = setInterval(scanFrame, 200);
-        } catch (e) {
-            showToast('❌ Error total de cámara', true);
-            closeCamera();
-        }
-    }
-}
   function closeCamera() {
     if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
     if (scanInterval) { clearInterval(scanInterval); scanInterval = null; }
