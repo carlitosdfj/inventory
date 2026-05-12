@@ -450,7 +450,7 @@
 
     try {
       const fields = {
-        'Activo': [currentAssetRecordId],
+        'Activo': (currentAssetRecordId ? { 'Activo': [currentAssetRecordId] } : {}),
         'QR': { text: currentQR },
         'Entrada/Salida': selectedTipo,
         'Responsable': responsable,
