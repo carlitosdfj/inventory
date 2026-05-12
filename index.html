@@ -606,16 +606,33 @@
     btn.textContent = 'REGISTRANDO...';
 
     try {
-      const nuevaCantidad = selectedStockTipo === 'Salida'
-        ? disponible - cantidad
-        : disponible + cantidad;
+      // Actualizar cantidad en Stock
+const res = await fetch(api('Stock', selectedStockRecord.id), {
+  method: 'PATCH',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ fields: { 'Cantidad Disponible': nuevaCantidad } })
+});
+const data = await res.json();
 
-      const res = await fetch(api('Stock', selectedStockRecord.id), {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fields: { 'Cantidad Disponible': nuevaCantidad } })
-      });
-      const data = await res.json();
+// Registrar en Movimientos
+if (data.id) {
+  const responsableVal = document.getElementById('stock-responsable').value.trim();
+  const eventoVal = document.getElementById('stock-evento').value.trim();
+  const notaVal = document.getElementById('stock-nota').value.trim();
+  const movFields = {
+    'Entrada/Salida': selectedStockTipo,
+    'Responsable': responsableVal,
+    'Fecha': new Date().toISOString().split('T')[0],
+    'Nota': `Stock: ${document.getElementById('stock-selected-name').textContent} · ${cantidad} uds`
+  };
+  if (eventoVal) movFields['Cliente/Evento'] = eventoVal;
+  if (notaVal) movFields['Nota'] += ` · ${notaVal}`;
+  await fetch(api('Movimientos'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields: movFields })
+  });
+}
 
       if (data.id) {
         showToast(`✅ ${selectedStockTipo} de ${cantidad} unidades registrada`);
