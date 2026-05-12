@@ -536,11 +536,11 @@
             const afuera = f['Afuera'] || 0;
             return `
               <div class="stock-result-item" onclick="seleccionarStock('${r.id}', '${(f['Nombre'] || '').replace(/'/g, "\\'")}', '${(f['Categoría'] || '').replace(/'/g, "\\'")}', '${(f['Marca'] || '').replace(/'/g, "\\'")}', '${(f['Medida'] || '').replace(/'/g, "\\'")}', ${disponible})">
-                <div class="stock-result-name">${f['Nombre'] || '—'} ${f['Marca'] ? '· ' + f['Marca'] : ''} ${f['Modelo'] ? f['Modelo'] : ''}</div>
+                <div class="stock-result-name">${f['Nombre'] || '—'} ${f['Categoría'] ? f['Categoría'] : ''} ${f['Medida'] ? f['Medida'] : ''}</div>
                 <div class="stock-result-meta">
-                  <span>${f['Categoría'] || '—'}</span>
-                  ${f['Medida'] ? `<span>${f['Medida']}</span>` : ''}
-                </div>
+                  ${f['Marca'] ? `<span>${f['Marca']}</span>` : ''}
+                  ${f['Modelo'] ? `<span>${f['Modelo']}</span>` : ''}
+              </div>
                 <div class="stock-result-counts">
                   <div class="stock-count-box">
                     <div class="stock-count-val disponible">${disponible}</div>
