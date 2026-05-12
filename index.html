@@ -450,12 +450,12 @@
 
     try {
       const fields = {
-        'Activo': (currentAssetRecordId ? { 'Activo': [currentAssetRecordId] } : {}),
         'QR': { text: currentQR },
         'Entrada/Salida': selectedTipo,
         'Responsable': responsable,
         'Fecha': new Date().toISOString().split('T')[0]
       };
+      if (currentAssetRecordId) fields['Activo'] = [currentAssetRecordId];
       if (evento) fields['Cliente/Evento'] = evento;
       if (notas) fields['Nota'] = notas;
 
