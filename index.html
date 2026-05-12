@@ -215,9 +215,15 @@
             <label>Cliente / Evento</label>
             <input type="text" id="evento-input" placeholder="Nombre del evento o cliente">
           </div>
-          <div class="input-group" style="margin-bottom:0">
+          <div class="input-group">
             <label>Nota (opcional)</label>
             <input type="text" id="notas-input" placeholder="Observaciones...">
+          </div>
+          <div class="input-group" style="margin-bottom:0">
+            <label>Ubicación</label>
+          <select id="ubicacion-select">
+            <option value="">Seleccionar ubicación...</option>
+          </select>
           </div>
           <button class="btn-registrar" id="btn-registrar" onclick="registrarMovimiento()" disabled>
             REGISTRAR MOVIMIENTO
@@ -282,9 +288,15 @@
         <label>Cliente / Evento</label>
         <input type="text" id="stock-evento" placeholder="Nombre del evento o cliente">
       </div>
-      <div class="input-group" style="margin-bottom:0">
+      <div class="input-group">
         <label>Nota (opcional)</label>
         <input type="text" id="stock-nota" placeholder="Observaciones...">
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <label>Ubicación</label>
+        <select id="stock-ubicacion-select">
+          <option value="">Seleccionar ubicación...</option>
+        </select>
       </div>
 
       <button class="btn-registrar" id="btn-registrar-stock" onclick="registrarStock()">
@@ -339,8 +351,23 @@
       document.getElementById('qr-input').value = qrParam;
       buscarActivo();
     }
+    cargarUbicaciones();
   };
+  
+async function cargarUbicaciones() {
+  try {
+    const res = await fetch(api('Ubicaciones'));
+    const data = await res.json();
+    const ubicaciones = data.records || [];
 
+    const options = ubicaciones.map(r => 
+      `<option value="${r.id}">${r.fields['Ubicación'] || '—'}</option>`
+    ).join('');
+
+    document.getElementById('ubicacion-select').innerHTML += options;
+    document.getElementById('stock-ubicacion-select').innerHTML += options;
+  } catch { console.error('Error cargando ubicaciones'); }
+}
   // API helper
   function api(table, recordId = null, filter = null) {
     let url = `/api/airtable?table=${encodeURIComponent(table)}`;
@@ -469,11 +496,14 @@
       if (data.id) {
         // Actualizar estado del activo automáticamente
         const nuevoEstado = selectedTipo === 'Salida' ? 'En uso' : 'Disponible';
+        const ubicacionId = document.getElementById('ubicacion-select').value;
+        const patchFields = { 'Estado': nuevoEstado };
+      if (ubicacionId) patchFields['Ubicación'] = [ubicacionId];
         await fetch(api('Activos', currentAssetRecordId), {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fields: { 'Estado': nuevoEstado } })
-        });
+          body: JSON.stringify({ fields: patchFields })
+      });
 
         showToast(`✅ ${selectedTipo} registrada correctamente`);
         document.getElementById('asset-estado').textContent = nuevoEstado;
