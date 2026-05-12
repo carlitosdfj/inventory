@@ -624,7 +624,7 @@ async function registrarStock() {
           'Entrada/Salida': selectedStockTipo,
           'Responsable': responsable,
           'Fecha': new Date().toISOString().split('T')[0],
-          'Nota': `Stock: ${document.getElementById('stock-selected-name').textContent} · ${cantidad} uds${notaVal ? ' · ' + notaVal : ''}`
+          'Nota': `${document.getElementById('stock-selected-name').textContent} · ${document.getElementById('stock-selected-meta').textContent.replace(/· \d+ disponibles/, '').trim()} · ${cantidad} uds${notaVal ? ' · ' + notaVal : ''}`
         };
         if (eventoVal) movFields['Cliente/Evento'] = eventoVal;
 
