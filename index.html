@@ -605,8 +605,8 @@
     btn.disabled = true;
     btn.textContent = 'REGISTRANDO...';
 
-    try {
       // Actualizar cantidad en Stock
+    try {
 const res = await fetch(api('Stock', selectedStockRecord.id), {
   method: 'PATCH',
   headers: { 'Content-Type': 'application/json' },
@@ -614,8 +614,8 @@ const res = await fetch(api('Stock', selectedStockRecord.id), {
 });
 const data = await res.json();
 
-// Registrar en Movimientos
 if (data.id) {
+  // Registrar en Movimientos
   const responsableVal = document.getElementById('stock-responsable').value.trim();
   const eventoVal = document.getElementById('stock-evento').value.trim();
   const notaVal = document.getElementById('stock-nota').value.trim();
@@ -623,30 +623,30 @@ if (data.id) {
     'Entrada/Salida': selectedStockTipo,
     'Responsable': responsableVal,
     'Fecha': new Date().toISOString().split('T')[0],
-    'Nota': `Stock: ${document.getElementById('stock-selected-name').textContent} · ${cantidad} uds`
+    'Nota': `Stock: ${document.getElementById('stock-selected-name').textContent} · ${cantidad} uds${notaVal ? ' · ' + notaVal : ''}`
   };
   if (eventoVal) movFields['Cliente/Evento'] = eventoVal;
-  if (notaVal) movFields['Nota'] += ` · ${notaVal}`;
   await fetch(api('Movimientos'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ fields: movFields })
   });
-}
 
-      if (data.id) {
-        showToast(`✅ ${selectedStockTipo} de ${cantidad} unidades registrada`);
-        selectedStockRecord.disponible = nuevaCantidad;
-        document.getElementById('stock-selected-meta').textContent =
-          document.getElementById('stock-selected-meta').textContent.replace(/\d+ disponibles/, `${nuevaCantidad} disponibles`);
-        document.getElementById('stock-cantidad').value = 1;
-        document.getElementById('stock-responsable').value = '';
-        document.getElementById('stock-evento').value = '';
-        document.getElementById('stock-nota').value = '';
-        document.getElementById('stock-btn-entrada').className = 'tipo-btn';
-        document.getElementById('stock-btn-salida').className = 'tipo-btn';
-        selectedStockTipo = null;
-        buscarStock();
+  showToast(`✅ ${selectedStockTipo} de ${cantidad} unidades registrada`);
+  selectedStockRecord.disponible = nuevaCantidad;
+  document.getElementById('stock-selected-meta').textContent =
+    document.getElementById('stock-selected-meta').textContent.replace(/\d+ disponibles/, `${nuevaCantidad} disponibles`);
+  document.getElementById('stock-cantidad').value = 1;
+  document.getElementById('stock-responsable').value = '';
+  document.getElementById('stock-evento').value = '';
+  document.getElementById('stock-nota').value = '';
+  document.getElementById('stock-btn-entrada').className = 'tipo-btn';
+  document.getElementById('stock-btn-salida').className = 'tipo-btn';
+  selectedStockTipo = null;
+  buscarStock();
+} else {
+  showToast('❌ Error: ' + (data.error?.message || 'desconocido'), true);
+}
       } else {
         showToast('❌ Error: ' + (data.error?.message || 'desconocido'), true);
       }
