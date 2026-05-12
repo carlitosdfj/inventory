@@ -309,7 +309,7 @@
   <canvas id="camera-canvas" style="display:none"></canvas>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<script src="https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js"></script>
 <script>
   // State
   let currentAssetRecordId = null;
@@ -641,43 +641,37 @@
 
   // =================== CAMERA ===================
 
-  async function openCamera() {
-    document.getElementById('camera-modal').className = 'camera-modal open';
-    try {
-      cameraStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { ideal: 'environment' } }
-      });
-      const video = document.getElementById('camera-view');
-      video.srcObject = cameraStream;
-      await video.play();
-      scanInterval = setInterval(scanFrame, 300);
-    } catch {
-      showToast('❌ No se pudo acceder a la cámara', true);
-      closeCamera();
-    }
-  }
+  let codeReader = null;
 
-  function closeCamera() {
-    if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
-    if (scanInterval) { clearInterval(scanInterval); scanInterval = null; }
-    document.getElementById('camera-modal').className = 'camera-modal';
-  }
-
-  async function scanFrame() {
+async function openCamera() {
+  document.getElementById('camera-modal').className = 'camera-modal open';
+  try {
+    codeReader = new ZXing.BrowserQRCodeReader();
     const video = document.getElementById('camera-view');
-    if (video.readyState !== video.HAVE_ENOUGH_DATA) return;
-
-    if (barcodeDetector) {
-      try {
-        const barcodes = await barcodeDetector.detect(video);
-        if (barcodes.length > 0) {
-          document.getElementById('qr-input').value = barcodes[0].rawValue;
+    await codeReader.decodeFromConstraints(
+      { video: { facingMode: 'environment' } },
+      video,
+      (result, error) => {
+        if (result) {
+          document.getElementById('qr-input').value = result.getText();
           closeCamera();
           buscarActivo();
         }
-      } catch {}
-      return;
-    }
+      }
+    );
+  } catch (err) {
+    showToast('❌ No se pudo acceder a la cámara', true);
+    closeCamera();
+  }
+}
+
+function closeCamera() {
+  if (codeReader) {
+    codeReader.reset();
+    codeReader = null;
+  }
+  document.getElementById('camera-modal').className = 'camera-modal';
+}
 
     const canvas = document.getElementById('camera-canvas');
     canvas.width = video.videoWidth;
