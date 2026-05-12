@@ -588,7 +588,7 @@
     input.value = val;
   }
 
-  async function registrarStock() {
+async function registrarStock() {
     if (!selectedStockRecord) return showToast('⚠️ Selecciona un item', true);
     if (!selectedStockTipo) return showToast('⚠️ Selecciona Entrada o Salida', true);
 
@@ -601,52 +601,51 @@
       return showToast(`⚠️ Solo hay ${disponible} disponibles`, true);
     }
 
+    const nuevaCantidad = selectedStockTipo === 'Salida'
+      ? disponible - cantidad
+      : disponible + cantidad;
+
     const btn = document.getElementById('btn-registrar-stock');
     btn.disabled = true;
     btn.textContent = 'REGISTRANDO...';
 
-      // Actualizar cantidad en Stock
     try {
-const res = await fetch(api('Stock', selectedStockRecord.id), {
-  method: 'PATCH',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ fields: { 'Cantidad Disponible': nuevaCantidad } })
-});
-const data = await res.json();
+      const res = await fetch(api('Stock', selectedStockRecord.id), {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fields: { 'Cantidad Disponible': nuevaCantidad } })
+      });
+      const data = await res.json();
 
-if (data.id) {
-  // Registrar en Movimientos
-  const responsableVal = document.getElementById('stock-responsable').value.trim();
-  const eventoVal = document.getElementById('stock-evento').value.trim();
-  const notaVal = document.getElementById('stock-nota').value.trim();
-  const movFields = {
-    'Entrada/Salida': selectedStockTipo,
-    'Responsable': responsableVal,
-    'Fecha': new Date().toISOString().split('T')[0],
-    'Nota': `Stock: ${document.getElementById('stock-selected-name').textContent} · ${cantidad} uds${notaVal ? ' · ' + notaVal : ''}`
-  };
-  if (eventoVal) movFields['Cliente/Evento'] = eventoVal;
-  await fetch(api('Movimientos'), {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fields: movFields })
-  });
+      if (data.id) {
+        const eventoVal = document.getElementById('stock-evento').value.trim();
+        const notaVal = document.getElementById('stock-nota').value.trim();
+        const movFields = {
+          'Entrada/Salida': selectedStockTipo,
+          'Responsable': responsable,
+          'Fecha': new Date().toISOString().split('T')[0],
+          'Nota': `Stock: ${document.getElementById('stock-selected-name').textContent} · ${cantidad} uds${notaVal ? ' · ' + notaVal : ''}`
+        };
+        if (eventoVal) movFields['Cliente/Evento'] = eventoVal;
 
-  showToast(`✅ ${selectedStockTipo} de ${cantidad} unidades registrada`);
-  selectedStockRecord.disponible = nuevaCantidad;
-  document.getElementById('stock-selected-meta').textContent =
-    document.getElementById('stock-selected-meta').textContent.replace(/\d+ disponibles/, `${nuevaCantidad} disponibles`);
-  document.getElementById('stock-cantidad').value = 1;
-  document.getElementById('stock-responsable').value = '';
-  document.getElementById('stock-evento').value = '';
-  document.getElementById('stock-nota').value = '';
-  document.getElementById('stock-btn-entrada').className = 'tipo-btn';
-  document.getElementById('stock-btn-salida').className = 'tipo-btn';
-  selectedStockTipo = null;
-  buscarStock();
-} else {
-  showToast('❌ Error: ' + (data.error?.message || 'desconocido'), true);
-}
+        await fetch(api('Movimientos'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fields: movFields })
+        });
+
+        showToast(`✅ ${selectedStockTipo} de ${cantidad} unidades registrada`);
+        selectedStockRecord.disponible = nuevaCantidad;
+        document.getElementById('stock-selected-meta').textContent =
+          document.getElementById('stock-selected-meta').textContent.replace(/\d+ disponibles/, `${nuevaCantidad} disponibles`);
+        document.getElementById('stock-cantidad').value = 1;
+        document.getElementById('stock-responsable').value = '';
+        document.getElementById('stock-evento').value = '';
+        document.getElementById('stock-nota').value = '';
+        document.getElementById('stock-btn-entrada').className = 'tipo-btn';
+        document.getElementById('stock-btn-salida').className = 'tipo-btn';
+        selectedStockTipo = null;
+        buscarStock();
       } else {
         showToast('❌ Error: ' + (data.error?.message || 'desconocido'), true);
       }
