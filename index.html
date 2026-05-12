@@ -672,20 +672,6 @@ function closeCamera() {
   }
   document.getElementById('camera-modal').className = 'camera-modal';
 }
-
-    const canvas = document.getElementById('camera-canvas');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(video, 0, 0);
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'dontInvert' });
-    if (code) {
-      document.getElementById('qr-input').value = code.rawValue;
-      closeCamera();
-      buscarActivo();
-    }
-  }
 </script>
 </body>
 </html>
